@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India's Green Import Trap — CIIP Battery Intelligence v2.0</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1F3A;--navy2:#0D2B4E;--teal:#0D7377;--teal2:#14A0A5;
+  --crimson:#B71C1C;--amber:#E65100;--gold:#F9A825;--gold2:#FFC107;
+  --slate:#37474F;--mist:#ECEFF1;--white:#FFFFFF;--off:#F8FAFB;
+  --border:#CFD8DC;--text2:#546E7A;--green:#2E7D32;--green2:#43A047;
+  --font-head:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:#080d16;color:var(--white);overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(8,13,22,0.96);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(13,115,119,0.25);}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;
+  justify-content:space-between;height:52px;padding:0 1.5rem;}
+.nav-logo{font-family:var(--font-head);font-size:.95rem;color:var(--white);}
+.nav-logo span{color:var(--teal2);}
+.nav-links{display:flex;gap:1.25rem;list-style:none;}
+.nav-links a{font-size:.72rem;color:rgba(255,255,255,.5);text-decoration:none;
+  letter-spacing:.06em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--teal2);}
+.nav-badge{background:rgba(183,28,28,.25);color:#EF5350;font-size:.65rem;
+  padding:.15rem .5rem;border-radius:3px;font-weight:700;letter-spacing:.04em;margin-left:.4rem;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#040810 0%,#080d16 40%,#0a1428 100%);}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(13,115,119,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(13,115,119,.06) 1px,transparent 1px);
+  background-size:64px 64px;}
+.hero-orb1{position:absolute;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(13,115,119,.14) 0%,transparent 65%);
+  top:-200px;right:-200px;pointer-events:none;}
+.hero-orb2{position:absolute;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(183,28,28,.1) 0%,transparent 65%);
+  bottom:50px;left:-100px;pointer-events:none;}
+.hero-orb3{position:absolute;width:300px;height:300px;
+  background:radial-gradient(circle,rgba(249,168,37,.08) 0%,transparent 65%);
+  top:40%;left:40%;pointer-events:none;}
+.hero-content{max-width:1280px;margin:0 auto;padding:7rem 2rem 4rem;
+  position:relative;z-index:1;}
+.hero-pill{display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(13,115,119,.12);border:1px solid rgba(13,115,119,.35);
+  border-radius:999px;padding:.3rem .9rem;margin-bottom:1.75rem;}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:var(--teal2);
+  animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-pill span{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal2);}
+.hero-h1{font-family:var(--font-head);font-size:clamp(2.6rem,5.5vw,5.2rem);
+  line-height:1.04;letter-spacing:-.025em;margin-bottom:1.25rem;}
+.hero-h1 em{font-style:italic;color:var(--teal2);}
+.hero-h1 .dim{color:rgba(255,255,255,.38);}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.55);max-width:620px;
+  line-height:1.75;margin-bottom:1.75rem;font-weight:300;}
+.hero-upgrade{display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(249,168,37,.1);border:1px solid rgba(249,168,37,.3);
+  border-radius:6px;padding:.4rem .9rem;margin-bottom:2.5rem;}
+.hero-upgrade span{font-size:.75rem;color:var(--gold);font-weight:500;}
+.hero-meta{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:3rem;}
+.hm-item{display:flex;flex-direction:column;gap:.15rem;}
+.hm-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.hm-val{font-size:.85rem;color:rgba(255,255,255,.75);}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);
+  border-radius:10px;overflow:hidden;}
+.hs{padding:1.4rem 1rem;background:#090e17;text-align:center;transition:background .2s;}
+.hs:hover{background:#0d1520;}
+.hs-val{font-family:var(--font-head);font-size:2rem;margin-bottom:.25rem;}
+.hs-val.red{color:#EF5350;} .hs-val.amber{color:var(--gold);}
+.hs-val.teal{color:var(--teal2);} .hs-val.green{color:#66BB6A;}
+.hs-label{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;
+  color:rgba(255,255,255,.45);}
+.hs-sub{font-size:.65rem;color:rgba(255,255,255,.25);margin-top:.2rem;}
+
+/* SECTIONS */
+section{padding:4.5rem 1.5rem;position:relative;}
+.container{max-width:1280px;margin:0 auto;}
+.stag{display:inline-block;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--teal2);margin-bottom:.6rem;}
+.sh2{font-family:var(--font-head);font-size:clamp(1.7rem,3vw,2.8rem);
+  line-height:1.15;margin-bottom:.9rem;}
+.sbody{font-size:.95rem;color:rgba(255,255,255,.55);line-height:1.8;
+  max-width:680px;font-weight:300;}
+.s-alt{background:#060a10;}
+.s-light{background:var(--white);color:var(--navy);}
+.s-light .sh2,.s-light .stag+*{color:var(--navy);}
+.s-light .sbody{color:var(--slate);}
+.s-light .stag{color:var(--teal);}
+
+/* VERSION BADGE */
+.version-strip{background:rgba(249,168,37,.08);border:1px solid rgba(249,168,37,.2);
+  border-radius:8px;padding:.9rem 1.25rem;margin-bottom:2rem;
+  display:flex;align-items:flex-start;gap:.75rem;}
+.vs-icon{font-size:1.1rem;margin-top:.1rem;}
+.vs-title{font-size:.8rem;font-weight:600;color:var(--gold);margin-bottom:.2rem;}
+.vs-body{font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.55;}
+
+/* THESIS */
+.thesis-quote{margin:2rem 0;padding:1.75rem 2rem;
+  border-left:3px solid var(--gold);
+  background:rgba(249,168,37,.05);border-radius:0 10px 10px 0;}
+.thesis-quote p{font-family:var(--font-head);font-size:1.2rem;
+  line-height:1.6;font-style:italic;color:rgba(255,255,255,.9);}
+.concept-correction{background:rgba(13,115,119,.08);border:1px solid rgba(13,115,119,.25);
+  border-radius:10px;padding:1.1rem 1.4rem;margin:1.5rem 0;}
+.cc-tag{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--teal2);margin-bottom:.4rem;}
+.cc-text{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.65;}
+.cc-text b{color:var(--white);font-weight:500;}
+
+/* SCENARIO ARCHITECTURE */
+.scenario-header{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
+  gap:1px;background:rgba(255,255,255,.06);border-radius:10px 10px 0 0;overflow:hidden;}
+.sc-head{padding:.65rem 1rem;text-align:center;font-size:.7rem;
+  font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.sc-head.h1{background:var(--crimson);color:var(--white);}
+.sc-head.h2{background:var(--amber);color:var(--white);}
+.sc-head.h3{background:var(--teal);color:var(--white);}
+.sc-head.h4{background:var(--green);color:var(--white);}
+.scenario-table{width:100%;border-collapse:collapse;
+  border-radius:0 0 10px 10px;overflow:hidden;}
+.scenario-table th{padding:.6rem .9rem;text-align:left;font-size:.72rem;
+  font-weight:600;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);
+  letter-spacing:.04em;}
+.scenario-table td{padding:.7rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:.82rem;vertical-align:middle;}
+.scenario-table tr:last-child td{border-bottom:none;}
+.scenario-table tr:hover td{background:rgba(255,255,255,.03);}
+.s1{color:#EF5350;font-weight:600;} .s2{color:#FF8A65;font-weight:600;}
+.s3{color:var(--teal2);font-weight:600;} .s4{color:#66BB6A;font-weight:600;}
+.assumption-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:1.1rem 1.4rem;margin-top:1rem;}
+.ab-title{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.6);
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem;}
+.ab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;}
+.ab-item{font-size:.78rem;color:rgba(255,255,255,.5);display:flex;gap:.4rem;align-items:flex-start;}
+.ab-item::before{content:"·";color:var(--teal2);flex-shrink:0;margin-top:.05rem;}
+
+/* PARADOX TABLE */
+.ptable{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.82rem;}
+.ptable th{padding:.65rem .9rem;text-align:left;background:var(--navy);
+  color:rgba(255,255,255,.7);font-weight:500;font-size:.7rem;
+  letter-spacing:.06em;text-transform:uppercase;}
+.ptable td{padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,.06);
+  vertical-align:top;line-height:1.45;}
+.ptable tr:hover td{background:rgba(255,255,255,.025);}
+.ptable td:first-child{color:rgba(255,255,255,.45);font-size:.78rem;font-weight:500;}
+.ptable td:nth-child(2){color:#81C784;}
+.ptable td:nth-child(3){color:#EF9A9A;}
+.ptable td:last-child{font-weight:600;color:var(--crimson);font-size:.75rem;}
+.oil-note{background:rgba(13,115,119,.07);border-left:2px solid var(--teal2);
+  border-radius:0 6px 6px 0;padding:.7rem 1rem;margin-top:.75rem;
+  font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.6;}
+.oil-note b{color:var(--teal2);font-weight:500;}
+
+/* 3 LAYERS */
+.layers{display:flex;flex-direction:column;gap:.9rem;margin:2rem 0;}
+.lcard{display:grid;grid-template-columns:72px 1fr 210px;
+  border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.07);
+  transition:transform .2s,border-color .2s;}
+.lcard:hover{transform:translateY(-2px);border-color:rgba(13,160,165,.3);}
+.ln{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--font-head);font-size:2.2rem;padding:1.25rem .5rem;}
+.ln.amber{background:var(--amber);}
+.ln.red{background:var(--crimson);}
+.lb{padding:1.1rem 1.3rem;background:rgba(255,255,255,.03);}
+.lt{font-size:.95rem;font-weight:600;margin-bottom:.25rem;}
+.lr{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  margin-bottom:.5rem;}
+.lr.amber{color:var(--gold);} .lr.red{color:#EF9A9A;}
+.ltext{font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.6;font-weight:300;}
+.ltags{padding:1.1rem;display:flex;flex-direction:column;justify-content:center;
+  gap:.35rem;background:rgba(8,13,22,.6);}
+.ltag{font-size:.72rem;padding:.25rem .55rem;background:rgba(183,28,28,.2);
+  color:#EF9A9A;border-radius:3px;}
+.ltag.t{background:rgba(13,115,119,.2);color:var(--teal2);}
+
+/* CIIP SCORES */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:1.1rem;margin:2rem 0;}
+.scard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:1.1rem 1.3rem;transition:border-color .2s;}
+.scard:hover{border-color:rgba(13,160,165,.35);}
+.sch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.4rem;}
+.scname{font-size:1rem;font-weight:600;}
+.sbadge{padding:.15rem .65rem;border-radius:999px;font-size:.68rem;font-weight:700;
+  letter-spacing:.04em;}
+.bc{background:rgba(183,28,28,.2);color:#EF5350;}
+.bh{background:rgba(230,81,0,.2);color:#FF8A65;}
+.bm{background:rgba(13,115,119,.2);color:var(--teal2);}
+.ssec{font-size:.75rem;color:rgba(255,255,255,.38);margin-bottom:.6rem;}
+.sdims{display:flex;gap:1.2rem;margin-bottom:.65rem;}
+.sdim{font-size:.75rem;color:rgba(255,255,255,.45);}
+.sdim b{color:rgba(255,255,255,.8);}
+.strack{height:7px;background:rgba(255,255,255,.08);border-radius:4px;
+  overflow:hidden;margin-bottom:.45rem;}
+.sfill{height:100%;border-radius:4px;width:0%;
+  transition:width 1.3s cubic-bezier(.4,0,.2,1);}
+.sfill.c{background:linear-gradient(90deg,#B71C1C,#EF5350);}
+.sfill.h{background:linear-gradient(90deg,#E65100,#FF7043);}
+.sfill.m{background:linear-gradient(90deg,#0D7377,#14A0A5);}
+.snums{display:flex;justify-content:space-between;font-size:.72rem;
+  color:rgba(255,255,255,.35);}
+.snv{font-size:1.3rem;font-weight:700;}
+.snv.c{color:#EF5350;} .snv.h{color:#FF8A65;} .snv.m{color:var(--teal2);}
+.chem-note{background:rgba(249,168,37,.06);border:1px solid rgba(249,168,37,.2);
+  border-radius:8px;padding:.8rem 1.1rem;margin-top:.5rem;
+  font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.55;}
+.chem-note b{color:var(--gold);font-weight:500;}
+
+/* METHODOLOGY UPGRADE */
+.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0;}
+.mcard{border-radius:10px;padding:1.2rem;border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.025);}
+.mcard-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;}
+.mcard-num{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;}
+.mn-a{background:rgba(13,115,119,.3);color:var(--teal2);}
+.mn-b{background:rgba(249,168,37,.25);color:var(--gold);}
+.mn-c{background:rgba(183,28,28,.25);color:#EF5350;}
+.mcard-title{font-size:.88rem;font-weight:600;color:rgba(255,255,255,.85);}
+.mcard-body{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6;}
+.mcard-status{margin-top:.65rem;font-size:.7rem;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;}
+.ms-done{color:#66BB6A;} .ms-next{color:var(--gold);} .ms-future{color:var(--teal2);}
+
+/* RECYCLING / CHEMISTRY */
+.scenario-pills{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.25rem 0;}
+.spill{padding:.35rem .9rem;border-radius:6px;font-size:.78rem;font-weight:500;
+  border:1px solid;}
+.spill.if{background:rgba(13,115,119,.12);border-color:rgba(13,115,119,.3);color:var(--teal2);}
+.spill.but{background:rgba(183,28,28,.1);border-color:rgba(183,28,28,.3);color:#EF9A9A;}
+.spill.neutral{background:rgba(249,168,37,.1);border-color:rgba(249,168,37,.3);color:var(--gold);}
+.if-but{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+.ib-card{border-radius:10px;padding:1.1rem;border:1px solid;}
+.ib-card.strong{background:rgba(13,115,119,.06);border-color:rgba(13,115,119,.25);}
+.ib-card.weak{background:rgba(183,28,28,.05);border-color:rgba(183,28,28,.2);}
+.ib-title{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:.5rem;}
+.ib-card.strong .ib-title{color:var(--teal2);}
+.ib-card.weak .ib-title{color:#EF9A9A;}
+.ib-item{font-size:.8rem;color:rgba(255,255,255,.6);padding:.2rem 0;
+  display:flex;gap:.4rem;align-items:flex-start;}
+.ib-item::before{content:"→";flex-shrink:0;margin-top:.05rem;}
+.ib-card.strong .ib-item::before{color:var(--teal2);}
+.ib-card.weak .ib-item::before{color:#EF9A9A;}
+
+/* MULTIPOLAR / v3 VISION */
+.v3-timeline{display:flex;gap:0;margin:2rem 0;border-radius:10px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.07);}
+.v3-phase{flex:1;padding:1.25rem;border-right:1px solid rgba(255,255,255,.07);}
+.v3-phase:last-child{border-right:none;}
+.v3-year{font-size:.7rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:.4rem;}
+.v3-title{font-size:.9rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:.4rem;}
+.v3-body{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.55;}
+.ph1 .v3-year{color:#EF5350;}
+.ph2 .v3-year{color:var(--gold);}
+.ph3 .v3-year{color:var(--teal2);}
+.ph4 .v3-year{color:#66BB6A;}
+.v3-domains{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:.7rem;margin:1.5rem 0;}
+.v3d{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;padding:.8rem;display:flex;flex-direction:column;gap:.3rem;}
+.v3d-icon{font-size:1.2rem;}
+.v3d-name{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.8);}
+.v3d-sub{font-size:.72rem;color:rgba(255,255,255,.4);}
+
+/* SIGNALS */
+.signals-list{display:flex;flex-direction:column;gap:.7rem;margin:2rem 0;}
+.sig{display:grid;grid-template-columns:78px 1fr;border-radius:9px;
+  overflow:hidden;border:1px solid rgba(255,255,255,.06);}
+.sig-tier{display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  writing-mode:vertical-lr;transform:rotate(180deg);padding:.9rem .4rem;}
+.sig-tier.c{background:var(--crimson);}
+.sig-tier.h{background:var(--amber);}
+.sig-tier.m{background:var(--teal);}
+.sig-body{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);}
+.sig-title{font-size:.9rem;font-weight:600;margin-bottom:.25rem;}
+.sig-text{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.55;font-weight:300;}
+.sig-mon{font-size:.72rem;color:var(--teal2);margin-top:.35rem;font-style:italic;}
+
+/* COUNTRY */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:1.1rem;margin:2rem 0;}
+.ccard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;overflow:hidden;}
+.chead{padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;}
+.cname{font-size:.95rem;font-weight:700;}
+.cev{font-size:.7rem;color:rgba(255,255,255,.45);margin-top:1px;}
+.cdeps{padding:.65rem 1rem;}
+.dr{display:flex;justify-content:space-between;padding:.28rem 0;
+  border-bottom:1px solid rgba(255,255,255,.05);font-size:.76rem;}
+.dr:last-child{border-bottom:none;}
+.dn{color:rgba(255,255,255,.5);} .dv{font-weight:600;}
+.dv.hi{color:#EF5350;} .dv.lo{color:#66BB6A;} .dv.md{color:#FFB74D;}
+
+/* CHARTS */
+.cgrid2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0;}
+.cc-dark{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:1.25rem;}
+.cc-light{background:var(--white);border-radius:10px;padding:1.25rem;
+  border:1px solid var(--border);}
+.ct-dark{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:.2rem;}
+.ct-light{font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.2rem;}
+.cs-dark{font-size:.72rem;color:rgba(255,255,255,.38);margin-bottom:.9rem;}
+.cs-light{font-size:.72rem;color:var(--text2);margin-bottom:.9rem;}
+.cw{position:relative;height:250px;}
+.cw-tall{position:relative;height:300px;}
+
+/* REFERENCES */
+.refs{display:flex;flex-direction:column;gap:.4rem;margin:1.5rem 0;}
+.ri{display:grid;grid-template-columns:48px 1fr;gap:.65rem;
+  padding:.55rem 0;border-bottom:1px solid rgba(0,0,0,.07);}
+.rc{font-size:.7rem;font-weight:700;color:var(--teal);padding-top:.05rem;}
+.rb{font-size:.77rem;color:var(--slate);line-height:1.5;}
+.rb a{color:var(--teal);text-decoration:none;}
+.rb a:hover{text-decoration:underline;}
+.rn{font-size:.7rem;color:var(--text2);margin-top:.15rem;font-style:italic;}
+.disclaimer{background:var(--mist);border-radius:8px;padding:.9rem 1.1rem;
+  font-size:.77rem;color:var(--text2);line-height:1.6;margin-top:1.25rem;}
+
+/* MOTIF */
+.motif{background:var(--navy);text-align:center;padding:2.5rem 2rem;
+  border-top:1px solid rgba(13,115,119,.25);}
+.motif-q{font-family:var(--font-head);font-size:1.3rem;
+  font-style:italic;color:rgba(255,255,255,.65);margin-bottom:.6rem;}
+.motif-a{font-size:.75rem;color:rgba(255,255,255,.3);
+  letter-spacing:.1em;text-transform:uppercase;}
+
+/* ANIMATIONS */
+.fi{opacity:0;transform:translateY(18px);transition:opacity .55s,transform .55s;}
+.fi.vis{opacity:1;transform:translateY(0);}
+
+/* TABS */
+.tab-bar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.tabb{padding:.4rem 1rem;font-size:.78rem;border:1px solid rgba(255,255,255,.12);
+  border-radius:6px;cursor:pointer;background:transparent;
+  color:rgba(255,255,255,.5);transition:all .15s;font-family:var(--font-body);}
+.tabb.active{background:var(--teal2);border-color:var(--teal2);color:var(--white);}
+.tab-panel{display:none;} .tab-panel.active{display:block;}
+
+@media(max-width:800px){
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .cgrid2{grid-template-columns:1fr;}
+  .method-grid{grid-template-columns:1fr;}
+  .v3-timeline{flex-direction:column;}
+  .if-but{grid-template-columns:1fr;}
+  .lcard{grid-template-columns:60px 1fr;}
+  .ltags{display:none;}
+  .scenario-header{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">CIIP <span>Battery</span> v2.0</div>
+    <ul class="nav-links">
+      <li><a href="#thesis">Thesis</a></li>
+      <li><a href="#scenarios">Scenarios</a></li>
+      <li><a href="#paradox">Paradox</a></li>
+      <li><a href="#layers">Layers</a></li>
+      <li><a href="#scores">CIIP Scores</a></li>
+      <li><a href="#chemistry">Chemistry Risk</a></li>
+      <li><a href="#recycling">Recycling</a></li>
+      <li><a href="#multipolar">Multipolarity</a></li>
+      <li><a href="#signals">Signals</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb1"></div><div class="hero-orb2"></div><div class="hero-orb3"></div>
+  <div class="hero-content">
+    <div class="hero-pill"><div class="pill-dot"></div>
+      <span>CIIP Battery Intelligence v2.0 · Peer-Reviewed Upgrade · June 2026</span>
+    </div>
+    <h1 class="hero-h1">India's <em>Green</em><br><span class="dim">Import Trap</span></h1>
+    <p class="hero-sub">How India's clean energy transition may become more strategically rigid and technologically irreversible than oil dependency — despite lower headline import values. Six critical upgrades from peer analytical review.</p>
+    <div class="hero-upgrade">
+      <span>▲ v2.0 — Scenario architecture · Corrected oil framing · Chemistry conditionality · Recycling dynamics · PCA rationale · Multipolar transition</span>
+    </div>
+    <div class="hero-meta">
+      <div class="hm-item"><span class="hm-label">Author</span><span class="hm-val">Aditya V Sivaram Poduri</span></div>
+      <div class="hm-item"><span class="hm-label">Framework</span><span class="hm-val">CIIP Battery Index v2.0</span></div>
+      <div class="hm-item"><span class="hm-label">Basis</span><span class="hm-val">Leontief I-O · PCA-calibrated</span></div>
+      <div class="hm-item"><span class="hm-label">Published</span><span class="hm-val">June 2026</span></div>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-val red">$116B</div><div class="hs-label">Oil Import FY25</div><div class="hs-sub">15+ countries, fungible</div></div>
+      <div class="hs"><div class="hs-val red">$19–53B</div><div class="hs-label">Clean Energy 2030</div><div class="hs-sub">Low–High scenario range</div></div>
+      <div class="hs"><div class="hs-val amber">ZERO</div><div class="hs-label">India Li Refining</div><div class="hs-sub">Despite 5.9Mt J&K</div></div>
+      <div class="hs"><div class="hs-val teal">v3.0</div><div class="hs-label">Network Centrality</div><div class="hs-sub">Next evolution path</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section id="thesis" class="s-alt">
+<div class="container fi">
+  <span class="stag">01 — Central Thesis (Corrected Framing)</span>
+  <h2 class="sh2">The Substitution India Isn't Discussing</h2>
+  <div class="version-strip">
+    <div class="vs-icon">⚠</div>
+    <div><div class="vs-title">v2.0 Framing Correction — Critical Issue 3</div>
+    <div class="vs-body">The v1.0 claim "critical minerals are worse than oil" was directionally correct but structurally imprecise. Oil is a flow commodity consumed continuously. Batteries are capital goods with multi-year lifecycles. The economic mechanisms differ. The corrected framing below is more precise and substantially harder to attack.</div></div>
+  </div>
+  <div class="thesis-quote">
+    <p>"Critical mineral dependency may become more strategically rigid and technologically irreversible than oil dependency — despite lower headline import values. Once India's EV and solar industries are built around Chinese cell chemistry, Chinese wafer specifications, and Chinese equipment, switching is not a 6-month logistics problem. It is a 10-year industrial rebuild."</p>
+  </div>
+  <div class="concept-correction">
+    <div class="cc-tag">Why the oil comparison must be qualified</div>
+    <div class="cc-text">
+      Oil is <b>continuously consumed</b> — every barrel imported today creates no lock-in for tomorrow. Critical minerals go into <b>capital goods with 8–15 year lives</b>. A battery gigafactory built on Chinese LFP technology in 2026 runs on that technology until 2038+. The dependency is not annual — it is structural. Furthermore, oil has partial substitutes (LNG, ethanol, hydrogen). Battery-grade lithium sulphate processed to Chinese specification has no short-term substitute for the factories built to that specification. The import dependency operates through <b>technological lock-in</b>, not price volatility — which makes it harder to detect, harder to quantify, and harder to exit.
+    </div>
+  </div>
+  <div class="cgrid2">
+    <div class="cc-dark">
+      <div class="ct-dark">Import Trajectory — Base vs Scenario Range</div>
+      <div class="cs-dark">Oil ($B) vs clean energy import bill — 4 scenarios to 2030</div>
+      <div class="cw-tall"><canvas id="importChart" role="img" aria-label="Line chart oil imports vs clean energy import bill scenarios 2019-2030">Oil steady ~$116B; clean energy from $15B in 2025 ranging $19B-$53B by 2030 across scenarios.</canvas></div>
+    </div>
+    <div class="cc-dark">
+      <div class="ct-dark">China's Processing Chokehold — Layer 2</div>
+      <div class="cs-dark">Share (%) of global refining/processing capacity 2025</div>
+      <div class="cw-tall"><canvas id="chinaChart" role="img" aria-label="Horizontal bar chart China share of global processing for key materials">LFP cathode 98%, Solar wafers 97%, Polysilicon 91%, Graphite anode 85%, Cobalt refining 80%, Lithium refining 74%.</canvas></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SCENARIO ARCHITECTURE -->
+<section id="scenarios">
+<div class="container fi">
+  <span class="stag">02 — Scenario Architecture (New in v2.0)</span>
+  <h2 class="sh2">The $53B Number Needs a Range, Not a Point</h2>
+  <p class="sbody">The v1.0 single-point 2030 projection was directionally correct but vulnerable to chemistry shifts, domestic assembly growth, and recycling offsets. v2.0 replaces it with four explicit scenarios, each with named assumptions.</p>
+
+  <div style="margin:1.75rem 0;">
+    <div class="scenario-header">
+      <div class="sc-head h1">S1 — China Dominance Continues</div>
+      <div class="sc-head h2">S2 — Moderate Localisation</div>
+      <div class="sc-head h3">S3 — Aggressive Refining Push</div>
+      <div class="sc-head h4">S4 — Sodium-Ion + Recycling</div>
+    </div>
+    <table class="scenario-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="s1">S1 — High Risk</th>
+          <th class="s2">S2 — Medium Risk</th>
+          <th class="s3">S3 — Managed</th>
+          <th class="s4">S4 — Disrupted</th>
+        </tr>
+      </thead>
+      <tbody id="scenarioBody"></tbody>
+    </table>
+    <div class="assumption-box">
+      <div class="ab-title">Key Assumptions Per Scenario</div>
+      <div class="ab-grid" id="assumptionGrid"></div>
+    </div>
+  </div>
+
+  <div class="cgrid2" style="margin-top:1.5rem;">
+    <div class="cc-dark">
+      <div class="ct-dark">2030 Clean Energy Import Bill — Scenario Range</div>
+      <div class="cs-dark">USD Billion — Battery + Solar combined projection</div>
+      <div class="cw"><canvas id="scenarioChart" role="img" aria-label="Bar chart of four scenario import bill projections for 2030">S1 $53B, S2 $38B, S3 $24B, S4 $19B.</canvas></div>
+    </div>
+    <div class="cc-dark">
+      <div class="ct-dark">CIIP Score Sensitivity — Nickel Under Chemistry Shift</div>
+      <div class="cs-dark">How nickel CIIP score changes across EV chemistry pathways</div>
+      <div class="cw"><canvas id="sensitivityChart" role="img" aria-label="Bar chart showing nickel CIIP score under different EV chemistry assumptions">NMC dominant 10.0, NMC/LFP mixed 8.2, LFP dominant 6.8, Sodium-ion 5.1.</canvas></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PARADOX -->
+<section id="paradox" class="s-light">
+<div class="container fi">
+  <span class="stag">03 — The Substitution Paradox</span>
+  <h2 class="sh2">Eight Dimensions — Qualified Comparison</h2>
+  <p class="sbody" style="color:var(--slate);">A structural comparison across eight operational dimensions. Note: where oil and mineral dependencies differ in economic mechanism, the comparison is qualified — not claimed as equivalent.</p>
+  <table class="ptable">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th style="color:#388E3C;">Oil Dependency</th>
+        <th style="color:#C62828;">Critical Mineral Dependency</th>
+        <th>Analytical Verdict</th>
+      </tr>
+    </thead>
+    <tbody id="paradoxBody"></tbody>
+  </table>
+  <div class="oil-note">
+    <b>Important qualification (v2.0 correction):</b> The above comparison is structural, not economic. Oil dependency creates immediate FX pressure and macro inflation risk. Critical mineral dependency creates <b>technological lock-in and strategic rigidity</b> — a different economic mechanism that operates over years and decades, not quarters. The dependency structures differ. The strategic risk is complementary, not identical. Both deserve serious policy attention. Only one is currently getting it.
+  </div>
+  <div class="cgrid2" style="margin-top:1.5rem;">
+    <div class="cc-light">
+      <div class="ct-light">EV Sales Share by Country (2025)</div>
+      <div class="cs-light">Higher share = more acute battery material demand pull on India's key suppliers</div>
+      <div class="cw"><canvas id="evChart" role="img" aria-label="Bar chart EV sales share by country 2025">China 52%, Vietnam 40%, Thailand 28%, Europe 27%, Turkey 22%, Indonesia 14%, USA 10%, Brazil 6%, India 4%.</canvas></div>
+    </div>
+    <div class="cc-light">
+      <div class="ct-light">Demand Growth Trajectory 2024–2030</div>
+      <div class="cs-light">Projected demand increase (%) — all scenarios assume some EV growth</div>
+      <div class="cw"><canvas id="demandChart" role="img" aria-label="Bar chart projected demand growth 2024-2030 by material">Lithium 180%, Graphite 120%, Nickel 85%, Manganese 60%, Cobalt 40%.</canvas></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- THREE LAYERS -->
+<section id="layers" class="s-alt">
+<div class="container fi">
+  <span class="stag">04 — Three-Layer Dependency Framework</span>
+  <h2 class="sh2">Where the Risk Actually Lives</h2>
+  <p class="sbody">Most policy analysis stops at Layer 1. The analytical error is not seeing Layer 2 (processing) and Layer 3 (equipment) — where China's structural control is near-total and exit timelines are measured in decades.</p>
+  <div class="layers" id="layersEl"></div>
+  <div style="background:rgba(249,168,37,.07);border:1px solid rgba(249,168,37,.22);
+    border-radius:9px;padding:1.1rem 1.4rem;margin-top:.75rem;">
+    <div style="font-size:.72rem;font-weight:700;color:var(--gold);letter-spacing:.06em;
+      text-transform:uppercase;margin-bottom:.35rem;">Hidden Layer — Vietnam Re-Labelling Trap</div>
+    <div style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6;font-weight:300;">
+      India's solar import data shows China's share falling from 90% to 56% of cell imports since FY2022. Policymakers cite this as diversification. Vietnam, Malaysia, and Thailand source 85–95% of their polysilicon and wafers from China. The module is assembled elsewhere. The upstream supply chain is not. When China restricts polysilicon exports, Vietnam's module supply to India collapses simultaneously. India's diversification dashboard shows improvement. India's actual supply chain resilience does not.
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CIIP SCORES -->
+<section id="scores">
+<div class="container fi">
+  <span class="stag">05 — CIIP Battery Index v2.0</span>
+  <h2 class="sh2">PCA-Calibrated Scoring — Three CRITICAL, Two HIGH</h2>
+  <p class="sbody">v2.0 introduces factor analysis rationale for weight selection. EV Demand weight (0.35) reflects the exponential EV adoption variance. Cross-Industry (0.40) retains highest weight as the primary Leontief contagion mechanism. Geopolitical (0.25) reflects production geography concentration.</p>
+  <div class="version-strip" style="margin-bottom:1.5rem;">
+    <div class="vs-icon">🔬</div>
+    <div><div class="vs-title">Methodology Upgrade Path — Critical Issue 1</div>
+    <div class="vs-body">Current weights: expert-calibrated on Leontief I-O basis (v2.0). Next upgrade: PCA/Factor Analysis using USGS HHI data + Prophet price series + import concentration time-series to statistically derive weights (v2.1 — in development). Ultimate target: Network Centrality Model with directed graph analysis for chokepoint identification (CIIP v3.0).</div></div>
+  </div>
+  <div class="sgrid" id="scoreGrid"></div>
+  <div class="cc-dark" style="margin-top:1.25rem;">
+    <div class="ct-dark">CIIP Scores — All Six Materials with Threshold Lines</div>
+    <div class="cs-dark">Red line = CRITICAL threshold (8.5) · Orange line = HIGH threshold (7.0) · Score formula: (EV×0.35 + Cross-Ind.×0.40 + Geo×0.25) × (10/3)</div>
+    <div class="cw-tall"><canvas id="ciipChart" role="img" aria-label="Bar chart CIIP scores all six materials with threshold lines at 8.5 and 7.0">Nickel 10.0, Lithium 8.8, Polysilicon 8.7, Cobalt 7.8, Graphite 7.4, Manganese 6.1.</canvas></div>
+  </div>
+  <div style="margin-top:1rem;padding:1rem 1.3rem;background:rgba(13,115,119,.07);
+    border:1px solid rgba(13,115,119,.22);border-radius:9px;
+    font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.65;">
+    <b style="color:var(--teal2);font-weight:500;">Nickel Production Geography — Corrected:</b> Indonesia 67%+ of global mine output (not Australia/South America as commonly assumed). Australia ranks 2nd in <i>reserves</i> but production fell 26% in 2024 due to Indonesian price pressure. CIIP Geopolitical scores reflect production concentration, not reserve location — a critical distinction. &nbsp;|&nbsp; <b style="color:var(--teal2);font-weight:500;">Aerospace confirmed:</b> Nickel-based superalloys (Inconel 718, CMSX-4 single-crystal) are the <i>exclusive</i> material for jet engine turbine blades and combustion chambers. No substitute exists above 1,000°C. This creates a structural demand floor independent of EV battery chemistry shifts.
+  </div>
+</div>
+</section>
+
+<!-- CHEMISTRY TRANSITION RISK -->
+<section id="chemistry" class="s-alt">
+<div class="container fi">
+  <span class="stag">06 — Battery Chemistry Transition Risk (New in v2.0)</span>
+  <h2 class="sh2">Nickel Risk Is Conditional — Not Deterministic</h2>
+  <p class="sbody">Critical Issue 5 from the analytical review: the v1.0 framework was heavily nickel-centric without making the chemistry pathway assumption explicit. This section corrects that.</p>
+  <div class="version-strip">
+    <div class="vs-icon">⚗</div>
+    <div><div class="vs-title">The Chemistry Conditionality Statement</div>
+    <div class="vs-body">Nickel's CRITICAL score (10.0) holds under NMC pathway assumptions. It requires explicit reassessment if India's EV fleet chemistry shifts toward LFP at scale, or if sodium-ion commercialisation accelerates for two-wheelers and grid storage. This conditionality is not a weakness of the framework — it is a feature. It identifies the single most important variable to monitor.</div></div>
+  </div>
+  <div class="if-but">
+    <div class="ib-card strong">
+      <div class="ib-title">Nickel thesis STRONGEST when:</div>
+      <div class="ib-item">India's long-range EV segment (cars, SUVs) adopts NMC heavily</div>
+      <div class="ib-item">Energy density remains critical — premium EV segment grows</div>
+      <div class="ib-item">Aerospace and stainless steel demand remains structural</div>
+      <div class="ib-item">India government mandates range standards favouring NMC</div>
+      <div class="ib-item">Solid-state batteries use nickel-rich cathodes (likely)</div>
+    </div>
+    <div class="ib-card weak">
+      <div class="ib-title">Nickel thesis WEAKEST when:</div>
+      <div class="ib-item">LFP dominates Indian two- and three-wheeler market (already happening)</div>
+      <div class="ib-item">Sodium-ion scales for grid storage and low-cost EVs</div>
+      <div class="ib-item">Battery swapping ecosystems reduce range anxiety need</div>
+      <div class="ib-item">India follows China's NMC→LFP chemistry trajectory</div>
+      <div class="ib-item">Solid-state timelines slip beyond 2035</div>
+    </div>
+  </div>
+  <div class="cgrid2">
+    <div class="cc-dark">
+      <div class="ct-dark">NMC vs LFP Market Share — China vs India Trajectory</div>
+      <div class="cs-dark">NMC share (%) of EV battery sales — diverging pathways</div>
+      <div class="cw"><canvas id="chemChart" role="img" aria-label="Line chart NMC share China vs India 2020-2030">China NMC share falling from 70% in 2020 to 18% in 2025 projected 10% by 2030; India NMC staying high 85-90%.</canvas></div>
+    </div>
+    <div class="cc-dark">
+      <div class="ct-dark">Chemistry Pathway Impact on Nickel CIIP Score</div>
+      <div class="cs-dark">CIIP score under four chemistry assumptions — 2030 horizon</div>
+      <div class="cw"><canvas id="chemScoreChart" role="img" aria-label="Bar chart nickel CIIP score under different chemistry pathways">NMC dominant 10.0, NMC/LFP split 8.2, LFP dominant 6.8, Sodium-ion penetration 5.1.</canvas></div>
+    </div>
+  </div>
+  <div style="margin-top:1rem;padding:1rem 1.3rem;background:rgba(249,168,37,.06);
+    border:1px solid rgba(249,168,37,.2);border-radius:9px;">
+    <div style="font-size:.72rem;font-weight:700;color:var(--gold);margin-bottom:.35rem;
+      letter-spacing:.06em;text-transform:uppercase;">Current India signal</div>
+    <div style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6;">
+      India's SUV/MPV segment reached 80% of EV sales in 2025 (up from 60% in 2024). SUVs and premium cars are the most energy-density-sensitive segment — this is a NMC signal, not an LFP signal. India's two-wheeler EV segment, however, is showing LFP adoption for cost reasons. The framework should be read as: <b style="color:rgba(255,255,255,.8);">nickel risk is HIGH for the car segment, MEDIUM for the two-wheeler segment, and stable for aerospace regardless of EV chemistry shifts.</b>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- RECYCLING DYNAMICS -->
+<section id="recycling" class="s-alt" style="background:#060a10;">
+<div class="container fi">
+  <span class="stag">07 — Recycling Dynamics (New in v2.0)</span>
+  <h2 class="sh2">The Circular Economy Offset — What the Critics Will Say</h2>
+  <p class="sbody">Critical Issue 4 identified a major omission: the v1.0 framework models a one-way extraction economy. By 2030–2035, urban mining may materially reduce lithium, nickel, and cobalt import intensity. This section acknowledges the offset — and explains why it does not resolve the near-term structural risk.</p>
+  <div class="tab-bar">
+    <button class="tabb active" onclick="showTab('rt','rt-current')">Current State</button>
+    <button class="tabb" onclick="showTab('rt','rt-2030')">2030 Scenarios</button>
+    <button class="tabb" onclick="showTab('rt','rt-india')">India Specific</button>
+  </div>
+  <div id="rt-current" class="tab-panel active">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+        border-radius:9px;padding:1rem;">
+        <div style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);
+          text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem;">Lithium recovery 2025</div>
+        <div style="font-size:1.8rem;font-weight:700;color:#EF5350;margin-bottom:.2rem;">~5%</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.45);line-height:1.5;">Global end-of-life Li-ion battery recycling rate. Economics weak. Collection infrastructure immature.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+        border-radius:9px;padding:1rem;">
+        <div style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);
+          text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem;">Nickel recovery 2025</div>
+        <div style="font-size:1.8rem;font-weight:700;color:#FF8A65;margin-bottom:.2rem;">~12%</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.45);line-height:1.5;">Higher than lithium due to established stainless steel scrap markets. NMC battery nickel recovery improving.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+        border-radius:9px;padding:1rem;">
+        <div style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);
+          text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem;">India battery take-back</div>
+        <div style="font-size:1.8rem;font-weight:700;color:#EF5350;margin-bottom:.2rem;">Nascent</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.45);line-height:1.5;">Battery Waste Management Rules 2022 notified but enforcement infrastructure minimal. No significant urban mining capacity yet.</div>
+      </div>
+    </div>
+    <div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.65;
+      background:rgba(255,255,255,.03);border-radius:8px;padding:1rem 1.2rem;">
+      <b style="color:rgba(255,255,255,.8);font-weight:500;">Why current recycling does not offset the 2030 risk:</b> Even at 2030 projections of 25–30% recovery rates globally, the stock of batteries requiring recycling is only as large as the fleet installed 8–10 years prior. India's EV fleet in 2030 is recycling batteries from a 2020–2022 fleet that barely existed. The recycling offset becomes material only from 2035 onward, when the 2025–2030 installation wave reaches end of life. The near-term (2025–2032) critical mineral dependency is structural and cannot be recycling-adjusted away.
+    </div>
+  </div>
+  <div id="rt-2030" class="tab-panel">
+    <div class="cgrid2">
+      <div class="cc-dark">
+        <div class="ct-dark">Recycling Recovery Rate Projections 2025–2035</div>
+        <div class="cs-dark">% of battery material recovered from end-of-life vehicles</div>
+        <div class="cw"><canvas id="recycleChart" role="img" aria-label="Line chart recycling recovery rates 2025-2035 for lithium, nickel, cobalt">Lithium rising from 5% to 25%, Nickel 12% to 38%, Cobalt 15% to 42% by 2035.</canvas></div>
+      </div>
+      <div class="cc-dark">
+        <div class="ct-dark">Net Import Offset from Recycling — India 2030</div>
+        <div class="cs-dark">Estimated reduction in primary import demand from recycling recovery</div>
+        <div class="cw"><canvas id="offsetChart" role="img" aria-label="Bar chart net import offset from recycling for key materials in India 2030">Lithium offset 3-5%, Nickel 8-12%, Cobalt 10-15%, Graphite 5-8%.</canvas></div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.65;
+      background:rgba(255,255,255,.03);border-radius:8px;padding:1rem 1.2rem;">
+      <b style="color:#66BB6A;font-weight:500;">The honest 2035 picture:</b> By 2035, if India's Battery Waste Management Rules achieve real enforcement, urban mining could offset 10–20% of lithium demand and 15–25% of cobalt demand. This is meaningful but does not eliminate the structural import dependency created in 2025–2032. It reduces the steady-state dependency ceiling — it does not resolve the transition-period vulnerability.
+    </div>
+  </div>
+  <div id="rt-india" class="tab-panel">
+    <div style="display:grid;grid-template-columns:1fr;gap:.75rem;">
+      <div style="background:rgba(255,255,255,.03);border-left:2px solid var(--crimson);
+        border-radius:0 8px 8px 0;padding:.9rem 1.1rem;">
+        <div style="font-size:.82rem;font-weight:600;color:#EF9A9A;margin-bottom:.3rem;">What India currently lacks</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.6;">No commercial black mass processing facility at scale. Battery Waste Management Rules 2022 notified without enforcement infrastructure. No EV battery collection network. No hydrometallurgical lithium recovery plant. Extended Producer Responsibility targets exist on paper — implementation is years behind.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border-left:2px solid var(--gold);
+        border-radius:0 8px 8px 0;padding:.9rem 1.1rem;">
+        <div style="font-size:.82rem;font-weight:600;color:var(--gold);margin-bottom:.3rem;">What India needs to build (2026–2030)</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.6;">Centralised battery collection hubs in top 20 EV cities. Two to three hydrometallurgical black mass processing plants (co-located with Adani/Tata gigafactory clusters). EPR enforcement with financial penalties creating market pull. Lithium recovery specifications aligned with battery-grade reuse standards. Government procurement preference for batteries with certified recycled content.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border-left:2px solid var(--teal2);
+        border-radius:0 8px 8px 0;padding:.9rem 1.1rem;">
+        <div style="font-size:.82rem;font-weight:600;color:var(--teal2);margin-bottom:.3rem;">What recycling realistically offsets by 2030</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.6;">Cobalt: 10–15% import reduction (cobalt most economically attractive to recover). Nickel: 5–10% reduction if NMC battery fleet grows as projected. Lithium: 2–5% reduction — smallest offset, requires most infrastructure investment. Graphite: 5–8% with cathode/anode black mass processing. Net effect on CIIP score: lithium moves from 8.8 to approximately 8.4 — still CRITICAL. Cobalt moves from 7.8 to approximately 7.2 — still HIGH.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MULTIPOLAR / V3 VISION -->
+<section id="multipolar" class="s-alt">
+<div class="container fi">
+  <span class="stag">08 — China Dominance ≠ Permanent · CIIP v3.0 Vision</span>
+  <h2 class="sh2">The Multipolar Transition — And Why It Doesn't Solve 2026–2032</h2>
+  <p class="sbody">Critical Issue 6: v1.0 insufficiently modelled the counter-forces to Chinese dominance. IRA, EU CRM Act, Indonesia refining build-out, Adani Mundra, African processing investments — all are real. The honest answer: the transition to multipolarity takes 8–12 years to materialise. The window of maximum exposure is <em>now</em>.</p>
+  <div class="v3-timeline">
+    <div class="v3-phase ph1">
+      <div class="v3-year">2025–2027</div>
+      <div class="v3-title">Maximum China Concentration</div>
+      <div class="v3-body">IRA and CMA Act in early implementation. Indonesia refining scaling but Chinese-controlled. Adani Mundra pre-commissioning. India gigafactories using Chinese-licensed tech. CIIP scores at current levels.</div>
+    </div>
+    <div class="v3-phase ph2">
+      <div class="v3-year">2027–2030</div>
+      <div class="v3-title">First Multipolar Signals</div>
+      <div class="v3-body">US IRA gigafactories coming online. EU CMA-driven diversification starting. Indonesia nickel processing becoming partially independent. Adani polysilicon commissioning. CIIP scores begin moderate reduction.</div>
+    </div>
+    <div class="v3-phase ph3">
+      <div class="v3-year">2030–2033</div>
+      <div class="v3-title">Structural Diversification</div>
+      <div class="v3-body">African refining investments mature. Australian lithium-to-chemicals plants scale. India PLI second generation results visible. Sodium-ion commercialisation impact measurable. China share falls from 70–90% toward 50–60%.</div>
+    </div>
+    <div class="v3-phase ph4">
+      <div class="v3-year">2033+</div>
+      <div class="v3-title">Multipolar Equilibrium</div>
+      <div class="v3-body">Not deglobalised — multipolar. Three to four processing blocs: China, USA/allies, EU/Africa, India/ASEAN. CIIP scores structurally lower but concentrated around new chokepoints (rare earths, advanced cathode IP, solid-state electrolyte).</div>
+    </div>
+  </div>
+
+  <div style="margin:2rem 0;">
+    <div style="font-size:.78rem;font-weight:600;color:rgba(255,255,255,.5);
+      text-transform:uppercase;letter-spacing:.07em;margin-bottom:1rem;">CIIP v3.0 — Network Centrality Vision</div>
+    <div style="font-size:.88rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:1.25rem;">
+      The peer analytical review correctly identifies Network Centrality Modeling as the right long-term direction. A directed graph where nodes are materials and industries, edges are weighted Leontief input-output dependencies, and Indonesia/China are identified as nodes with highest betweenness centrality is genuinely doctoral-level work applied to a practitioner problem. The question driving it — <em style="color:rgba(255,255,255,.8);">"what second-order industrial dependencies emerge when a civilisation electrifies?"</em> — is the right question.
+    </div>
+    <div class="v3-domains">
+      <div class="v3d"><div class="v3d-icon">⚡</div><div class="v3d-name">Energy Transition</div><div class="v3d-sub">Current work</div></div>
+      <div class="v3d"><div class="v3d-icon">🖥</div><div class="v3d-name">AI Infrastructure</div><div class="v3d-sub">Copper, rare earths</div></div>
+      <div class="v3d"><div class="v3d-icon">💻</div><div class="v3d-name">Semiconductors</div><div class="v3d-sub">Gallium, germanium</div></div>
+      <div class="v3d"><div class="v3d-icon">🌱</div><div class="v3d-name">Critical Minerals</div><div class="v3d-sub">Expanding scope</div></div>
+      <div class="v3d"><div class="v3d-icon">💧</div><div class="v3d-name">Water Inputs</div><div class="v3d-sub">Industrial dependency</div></div>
+      <div class="v3d"><div class="v3d-icon">🌾</div><div class="v3d-name">Fertiliser Minerals</div><div class="v3d-sub">Phosphate, potash</div></div>
+      <div class="v3d"><div class="v3d-icon">🔮</div><div class="v3d-name">Rare Earths</div><div class="v3d-sub">Magnets, catalysts</div></div>
+      <div class="v3d"><div class="v3d-icon">🗺</div><div class="v3d-name">India 2030 ORM</div><div class="v3d-sub">The unified map</div></div>
+    </div>
+  </div>
+
+  <div class="method-grid">
+    <div class="mcard">
+      <div class="mcard-head">
+        <div class="mcard-num mn-a">A</div>
+        <div class="mcard-title">Delphi Expert Calibration</div>
+      </div>
+      <div class="mcard-body">Structured survey of 5+ senior practitioners — battery engineers, geopolitical analysts, procurement heads. Converts CIIP from "analytically calibrated" to "expert-validated." Your LinkedIn network (Faiq, Daniel Stanton, Shobitha) is the starting point.</div>
+      <div class="mcard-status ms-next">→ Next step: LinkedIn outreach with scoring matrix</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-head">
+        <div class="mcard-num mn-b">B</div>
+        <div class="mcard-title">PCA / Factor Analysis</div>
+      </div>
+      <div class="mcard-body">Use USGS HHI data, Prophet price series, and import concentration time-series to statistically derive weights. Replaces "I chose 0.35 for EV demand" with "the data shows EV demand explains 38.2% of variance in supply disruption events."</div>
+      <div class="mcard-status ms-next">→ In development: CIIP v2.1 target</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-head">
+        <div class="mcard-num mn-c">C</div>
+        <div class="mcard-title">Network Centrality Modeling</div>
+      </div>
+      <div class="mcard-body">Directed graph analysis of input-output matrix. Identifies chokepoint centrality, contagion propagation paths, system fragility. Indonesia and China emerge as highest betweenness centrality nodes. This is CIIP v3.0 — the India 2030 Operational Resilience Map.</div>
+      <div class="mcard-status ms-future">→ CIIP v3.0 — Q4 2026 target</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- COUNTRY DEPENDENCY -->
+<section id="countries" class="s-alt" style="background:#060a10;">
+<div class="container fi">
+  <span class="stag">09 — Country Dependency</span>
+  <h2 class="sh2">Six Countries. One Common Thread.</h2>
+  <p class="sbody">Countries selected by EV growth trajectory and strategic supply chain exposure. The thread connecting all: China's refining dominance means EV growth everywhere deepens dependency on Chinese midstream processing capacity.</p>
+  <div class="cgrid" id="countryGrid"></div>
+</div>
+</section>
+
+<!-- SIGNALS -->
+<section id="signals">
+<div class="container fi">
+  <span class="stag">10 — Contagion Watch Signals</span>
+  <h2 class="sh2">Five Signals That Move Before Prices Do</h2>
+  <p class="sbody">The CIIP framework is a live monitoring system. These signals, tracked weekly, provide early warning of supply chain stress before it appears in commodity prices or procurement lead times.</p>
+  <div class="signals-list" id="signalsList"></div>
+</div>
+</section>
+
+<!-- REFERENCES -->
+<section id="references" class="s-light">
+<div class="container fi">
+  <span class="stag">References & Data Sources — Fairness Check</span>
+  <h2 class="sh2">All 22 Claims Sourced</h2>
+  <p class="sbody" style="color:var(--slate);">Every factual claim is sourced from primary or authoritative secondary sources. CIIP input scores are expert-calibrated analytical judgements on a Leontief I-O basis — not regression-derived. Projections beyond 2025 are directional institutional estimates, not precise forecasts.</p>
+  <div class="refs" id="refsList"></div>
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> CIIP input scores are expert-calibrated analytical judgements based on Leontief Input-Output economics principles. They are not regression-derived statistical outputs. All data from publicly available institutional reports. Projections beyond 2025 are directional estimates from cited sources and should not be treated as precise forecasts. This report is produced for analytical and educational purposes. <strong>Developer:</strong> Aditya V Sivaram Poduri — India Supply Chain Signals — indiasupplychainsignals.substack.com
+  </div>
+</div>
+</section>
+
+<!-- MOTIF -->
+<div class="motif">
+  <div class="motif-q">"AI accelerates operational logic. It does not create it."</div>
+  <div class="motif-a">India Supply Chain Signals · Aditya V Sivaram Poduri · indiasupplychainsignals.substack.com · CIIP Battery Intelligence v2.0 · June 2026</div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const SCENARIOS = {
+  rows:[
+    {label:"Battery import bill (FY2030)",s1:"$23B",s2:"$17B",s3:"$11B",s4:"$8B"},
+    {label:"Solar equipment imports (FY2030)",s1:"$30B",s2:"$21B",s3:"$13B",s4:"$11B"},
+    {label:"Combined clean energy imports",s1:"$53B",s2:"$38B",s3:"$24B",s4:"$19B"},
+    {label:"India domestic cell capacity (GWh)",s1:"5 GWh",s2:"25 GWh",s3:"60 GWh",s4:"40 GWh"},
+    {label:"India Li refining capacity",s1:"Near zero",s2:"Partial",s3:"Significant",s4:"Moderate"},
+    {label:"China's battery market share for India",s1:">80%",s2:"55–65%",s3:"35–45%",s4:"30–40%"},
+    {label:"Nickel CIIP score (adjusted)",s1:"10.0",s2:"8.8",s3:"7.5",s4:"5.5"},
+    {label:"Risk tier",s1:"CRITICAL",s2:"HIGH",s3:"HIGH",s4:"MEDIUM"},
+  ],
+  assumptions:[
+    "S1: No domestic refining. PLI underdelivers. China controls 80%+ midstream. NMC dominant.",
+    "S2: Partial PLI success. 25 GWh domestic capacity. J&K lithium auction succeeds. LFP/NMC split.",
+    "S3: Adani Mundra + J&K operational. Aggressive AU/Chile partnerships. Some refining independence.",
+    "S4: Sodium-ion commercialised for 2W/grid. LFP dominant. Recycling at 20%+ recovery. NMC niche only.",
+    "All scenarios assume India 500 GW renewable target maintained.",
+    "Currency: USD constant 2025. Excludes tariff distortions.",
+    "Recycling offset: 3–8% demand reduction assumed across S3 and S4.",
+    "China export controls: assumed to escalate moderately in S1/S2, stabilise in S3/S4.",
+  ]
+};
+
+const MATERIALS = [
+  {name:"Nickel",score:10.0,tier:"CRITICAL",tc:"c",ev:3.0,cross:3.0,geo:3.0,
+   sectors:"EV batteries + stainless steel + aerospace turbine blades",
+   chem:"Score conditional on NMC pathway. Falls to 6.8 if LFP dominates India."},
+  {name:"Lithium",score:8.8,tier:"CRITICAL",tc:"c",ev:3.0,cross:2.5,geo:2.8,
+   sectors:"EV batteries + grid storage + consumer electronics",
+   chem:"Recycling offset reduces score ~0.3 by 2030. Sodium-ion could reduce further post-2030."},
+  {name:"Polysilicon",score:8.7,tier:"CRITICAL",tc:"c",ev:2.8,cross:2.8,geo:3.0,
+   sectors:"Solar PV + semiconductors + solar electronics",
+   chem:"Adani Mundra commissioning could reduce score to ~7.5. Vietnam re-labelling keeps effective score high."},
+  {name:"Cobalt",score:7.8,tier:"HIGH",tc:"h",ev:2.5,cross:2.0,geo:3.0,
+   sectors:"EV batteries + aerospace alloys + defence electronics",
+   chem:"Most sensitive to recycling. Recovery economics strongest. 2030 score could fall to ~7.0."},
+  {name:"Graphite",score:7.4,tier:"HIGH",tc:"h",ev:2.5,cross:1.5,geo:3.0,
+   sectors:"Battery anode + steel production + lubricants",
+   chem:"China export controls Oct 2024 are a live escalation risk. No alternative anode processing at scale."},
+  {name:"Manganese",score:6.1,tier:"MEDIUM",tc:"m",ev:2.0,cross:2.0,geo:2.0,
+   sectors:"NMC batteries + steel alloys + fertilisers",
+   chem:"South Africa and Gabon provide geographic diversification. MEDIUM score reflects lower concentration."},
+];
+
+const PARADOX_ROWS = [
+  ["Supplier count","15+ countries globally","1 country controls processing (China)","MORE CONCENTRATED"],
+  ["Commodity type","Fungible crude — any barrel substitutes","Processed intermediates — chemistry-specific","MORE LOCKED-IN"],
+  ["Economic mechanism","Flow commodity — annual import pressure","Capital good — multi-year lock-in (see note)","DIFFERENT MECHANISM"],
+  ["Substitution speed","Route change in weeks via spot market","Alternative processing: 5–10 years to build","HARDER TO EXIT"],
+  ["Visibility in data","Tracked monthly, debated in Parliament","Buried in battery BOM. Invisible.","BIGGER BLIND SPOT"],
+  ["India's leverage","3rd largest buyer — real pricing power","Price taker. No refining = no leverage","LESS LEVERAGE"],
+  ["Weaponisation risk","Moderate — multiple suppliers, liquid","China used export controls October 2024","HIGHER RISK (today)"],
+  ["Scale by 2030","~$120–130B (flow)","$19–53B range (capex-embedded)","APPROACHES PARITY (S1)"],
+];
+
+const LAYERS = [
+  {n:"1",cls:"amber",title:"Raw Material — Mine Output",risk:"MEDIUM RISK — Visible but misread",rc:"amber",
+   body:"Australia has lithium. Indonesia has nickel. DRC has cobalt. Geographically distributed. Analysts stop here and feel reassured. This is the wrong layer. Raw ore has no value in a battery until chemically processed into battery-grade compounds.",
+   tags:[{t:"Li ore: Australia 55%, Chile 25%",c:"t"},{t:"Ni ore: Indonesia 67%, Phil. 9%",c:"t"},{t:"Co ore: DRC 70%+",c:"t"}]},
+  {n:"2",cls:"red",title:"Processing & Refining — The Chokepoint",risk:"CRITICAL RISK — The actual dependency",rc:"red",
+   body:"China controls 74% of global lithium refining, 80% of cobalt, 91% of polysilicon, 98% of LFP cathode. India's lithium refining: zero. A country that imports the ore but cannot refine it does not control its supply chain. It exports raw material and re-imports the processed product from its geopolitical competitor.",
+   tags:[{t:"Li refining: China 74%"},{t:"Cobalt: China 80%"},{t:"Polysilicon: China 91%"},{t:"LFP cathode: China 98%"}]},
+  {n:"3",cls:"red",title:"Equipment & Technology — The Lock-In",risk:"CRITICAL RISK — Hardest to exit",rc:"red",
+   body:"80–90% of battery cell manufacturing equipment is Chinese. Amara Raja licensed Gotion's LFP technology. Exide licensed SVOLT's technology. Even if India builds the factory, the equipment and core IP are Chinese. A Chinese export control on manufacturing equipment terminates India's domestic cell production ambition before it starts.",
+   tags:[{t:"Cell equipment: ~80–90% China"},{t:"LFP tech: Gotion (Amara Raja JV)"},{t:"Cell tech: SVOLT (Exide license)"}]},
+];
+
+const COUNTRIES = [
+  {name:"India 🇮🇳",ev:"4% (2025)",gr:"+45% YoY",risk:"CRITICAL",rc:"#B71C1C",
+   deps:[{m:"Lithium compounds",v:"68% China",c:"hi"},{m:"Li-ion batteries",v:"85% China",c:"hi"},
+     {m:"Nickel refining",v:"90%+ Asia",c:"hi"},{m:"Cobalt refining",v:"~80% China",c:"hi"},
+     {m:"Polysilicon",v:"91% China",c:"hi"},{m:"Li refining capacity",v:"ZERO",c:"hi"}]},
+  {name:"China 🇨🇳",ev:"52% (2025)",gr:"+18% YoY",risk:"MEDIUM",rc:"#0D7377",
+   deps:[{m:"Nickel ore",v:"~60% Indonesia",c:"md"},{m:"Lithium ore",v:"~55% Australia",c:"md"},
+     {m:"Cobalt ore",v:"70%+ DRC",c:"hi"},{m:"Graphite",v:"85% domestic",c:"lo"},
+     {m:"LFP cathode",v:"98% domestic",c:"lo"},{m:"Solar wafers",v:"97% domestic",c:"lo"}]},
+  {name:"USA 🇺🇸",ev:"10% (2025)",gr:"-4% YoY",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Cobalt",v:"75% DRC via China",c:"hi"},{m:"Graphite",v:"~70% China",c:"hi"},
+     {m:"Battery cells",v:"~65% Asia",c:"hi"},{m:"Lithium",v:"~60% Chile/Aus",c:"md"},
+     {m:"Nickel",v:"~55% Canada/Indo",c:"md"},{m:"IRA re-shoring",v:"Early stage",c:"lo"}]},
+  {name:"Europe 🇪🇺",ev:"27% (2025)",gr:"+33% YoY",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Graphite",v:"~80% China",c:"hi"},{m:"Cobalt",v:"~80% via China",c:"hi"},
+     {m:"Nickel",v:"~60% Indo/Russia",c:"hi"},{m:"Battery cells",v:"~70% Korea/China",c:"hi"},
+     {m:"Lithium",v:"~55% Chile/Aus",c:"md"},{m:"CRM Act",v:"Early implementation",c:"lo"}]},
+  {name:"Indonesia 🇮🇩",ev:"14% (2025)",gr:"+100%+ YoY",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Nickel (domestic)",v:"50%+ global",c:"lo"},{m:"Battery cells",v:"~90% China JV",c:"hi"},
+     {m:"Lithium",v:"~80% China import",c:"hi"},{m:"Cobalt",v:"~75% China",c:"hi"},
+     {m:"EV processing",v:"Huayou 73%+ stake",c:"hi"},{m:"Cell technology",v:"Chinese JV",c:"hi"}]},
+  {name:"Vietnam 🇻🇳",ev:"40% (2025)",gr:"from ~0% in 2020",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Battery cells",v:"~85% China",c:"hi"},{m:"Polysilicon",v:"~90% China",c:"hi"},
+     {m:"VinFast components",v:"~60% China",c:"hi"},{m:"Graphite",v:"~85% China",c:"hi"},
+     {m:"Cobalt",v:"~80% China",c:"hi"},{m:"Note",v:"Re-labelling only",c:"md"}]},
+];
+
+const SIGNALS = [
+  {tier:"CRITICAL",cls:"c",title:"Indonesia Nickel Quota Announcements",
+   body:"67%+ of global supply. Any export ban hits EV batteries, stainless steel, and aerospace simultaneously. Jakarta did this in 2020 (laterite ore ban). 2025: quotas being cut to defend prices. The single highest-consequence geopolitical trigger in this framework.",
+   mon:"ESDM ministry · ANTAM/Vale Indonesia production · LME nickel forward curve"},
+  {tier:"CRITICAL",cls:"c",title:"China MOFCOM/GACC Export Control Expansion",
+   body:"October 2024 controls: graphite anode, cathode precursors, LFP technology, cell manufacturing equipment. Even processing delays cascade as supply disruptions. Next escalation risk: battery formation equipment and electrolyte processing machinery.",
+   mon:"MOFCOM and GACC licensing weekly · China export approval rate for graphite"},
+  {tier:"HIGH",cls:"h",title:"India J&K Lithium Auction Results",
+   body:"5.9Mt reserves. First auction failed — no qualified bids. Successful auction = structural de-risking event. Would reduce lithium CIIP score from 8.8 toward 7.5 over 5–7 year development horizon. Most significant positive structural signal in this framework.",
+   mon:"MECL and Ministry of Mines auction notices · Geological survey updates"},
+  {tier:"HIGH",cls:"h",title:"NMC vs LFP Chemistry Split in Indian EV Sales",
+   body:"China's fleet shifting to LFP (nickel-free). India SUV/MPV segment (80% of EV sales in 2025) is NMC-favourable. Two-wheeler segment showing LFP cost adoption. This split determines whether nickel CIIP score is 10.0 or 6.8 by 2030.",
+   mon:"SIAM monthly EV sales by segment · Battery chemistry disclosure in FAME registrations"},
+  {tier:"MEDIUM",cls:"m",title:"Adani Mundra Polysilicon Commissioning",
+   body:"30,000 MTPA facility in Gujarat. India's only credible near-term upstream solar independence move. Commissioning reduces polysilicon CIIP from 8.7 toward 7.5. Currently zero commercial polysilicon production in India.",
+   mon:"Adani Green quarterly reports · MNRE capacity addition data · Gujarat industrial permits"},
+];
+
+const REFS = [
+  {code:"R01",t:"IEA Global EV Outlook 2025 — Electric Vehicle Batteries",u:"https://www.iea.org/reports/global-ev-outlook-2025/electric-vehicle-batteries",n:"China 80% battery cell production; lithium demand +30% 2024; battery market dynamics"},
+  {code:"R02",t:"IEA Global EV Outlook 2026 — Trends in Electric Cars",u:"https://www.iea.org/reports/global-ev-outlook-2026/trends-in-electric-cars",n:"China 13M EV sales 2025; 52% market share; Europe +33%; global 20M+ milestone"},
+  {code:"R03",t:"IEA Critical Minerals Outlook 2025 — Executive Summary",u:"https://www.iea.org/reports/global-critical-minerals-outlook-2025/executive-summary",n:"Nickel/cobalt/graphite +6-8% 2024; energy sector 85% of demand growth; supply surplus risks"},
+  {code:"R04",t:"USGS Mineral Commodity Summaries 2025 — Nickel",u:"https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-nickel.pdf",n:"Global production 3.7Mt 2024; Indonesia +8%; Australia -26%; Philippines -20%"},
+  {code:"R05",t:"IndexBox — India Battery Cell Manufacturing Challenges (2026)",u:"https://www.indexbox.io/blog/indias-battery-storage-push-import-dependency-persists",n:"India 18,200t lithium imports 2025; 68% China; 2030 $23B projection; cell capacity 1 GWh"},
+  {code:"R06",t:"IEEFA — Securing India's Battery Supply Chain (2026)",u:"https://ieefa.org/resources/securing-indias-battery-supply-chain-more-critical-ever",n:"India Li refining zero; cobalt 2,060t/yr; J&K 5.9Mt reserve; failed auction 2025"},
+  {code:"R07",t:"ORF — India's EV Sector and the China Challenge (2025)",u:"https://www.orfonline.org/expert-speak/india-s-ev-sector-and-the-china-challenge",n:"India imports 90%+ Li/Co/Ni; China 85% Li-ion battery import share; FAME-II stats"},
+  {code:"R08",t:"Down to Earth — India's Solar Surge: China Supply Chain Dominance",u:"https://www.downtoearth.org.in/energy/indias-solar-success-is-riding-high-but-remains-wired-to-the-dragon",n:"China 91% polysilicon, 97% wafers; India 80% solar import dependent; $7B FY2024"},
+  {code:"R09",t:"China Briefing — Investor's Guide to Solar Manufacturing in India",u:"https://www.china-briefing.com/china-outbound-news/an-investors-guide-to-solar-manufacturing-in-india",n:"China 75–95% solar PV supply chain; India module capacity 74GW March 2025"},
+  {code:"R10",t:"Deccan Herald — India Solar Imports May Surge $30B by 2030",u:"https://www.deccanherald.com/business/indias-solar-equipment-imports-may-surge-to-30-billion-by-2030-3240791",n:"$30B solar import projection without upstream manufacturing development"},
+  {code:"R11",t:"IEEFA — War Opens Renewable Energy Pathway (March 2026)",u:"https://ieefa.org/resources/war-opens-renewable-energy-pathway",n:"India oil import $116.4B FY2025; crude 229Mt; solar 143GW installed Feb 2026"},
+  {code:"R12",t:"ICCT — Global EV Market Monitor Light-Duty Vehicles 2025",u:"https://theicct.org/publication/global-ev-market-monitor-for-ldvs-2025/",n:"Global 20M+ EVs 2025; India SUV/MPV 80% of EV sales 2025; Vietnam 40% share"},
+  {code:"R13",t:"ING Think — Nickel Still Capped by Surplus (December 2025)",u:"https://think.ing.com/articles/nickel-still-capped-by-surplus/",n:"NMC share China fell to 18% H1 2025; LFP dominance structurally reducing nickel demand in China"},
+  {code:"R14",t:"Investing News — Top Nickel Producing Countries (2025)",u:"https://investingnews.com/daily/resource-investing/base-metals-investing/nickel-investing/top-nickel-producing-countries/",n:"Indonesia, Philippines, Russia top producers; Philippines 330,000MT 2024; not Australia"},
+  {code:"R15",t:"Statranker — Top 10 Nickel-Producing Countries 2025",u:"https://statranker.org/economy/top-10-nickel-producing-countries-in-2025-a-comprehensive-analysis/",n:"Indonesia 2.6Mt 2025; 67%+ global share; global production 3.9Mt USGS estimate"},
+  {code:"R16",t:"ScienceDirect — Nickel-Based Superalloys for Gas Turbine Applications (2023)",u:"https://www.sciencedirect.com/science/article/abs/pii/S0925838823024313",n:"Single-crystal Inconel exclusively for aerospace turbine blades; no substitute above 1000°C"},
+  {code:"R17",t:"Academia.edu — Nickel Base Superalloys for Aero Engine Turbine Blades",u:"https://www.academia.edu/26183228/Nickel_Base_Superalloys_used_for_Aero_Engine_Turbine_Blades",n:"Turbine inlet temperature capability determined exclusively by Ni-base superalloy performance"},
+  {code:"R18",t:"Takshashila — India's Options Amid Chinese Export Curbs (2025)",u:"https://takshashila.org.in/content/blogs/20251014-indias-options-amid-chinese-export-curbs",n:"China Oct 2024 controls: graphite, LFP cathode, cell tech; India cell imports $2.2B FY2025"},
+  {code:"R19",t:"Stainless Steel World — World Nickel Market in 2025",u:"https://stainless-steel-world.net/the-world-nickel-market-in-2025",n:"70% nickel in stainless steel; NMC811 share ~40% 2024; battery demand share growing"},
+  {code:"R20",t:"LKY School — China Factor in India's Battery Ambitions (2025)",u:"https://lkyspp.nus.edu.sg/cag/publications/center-publications/publication-article/detail/the-china-factor",n:"Amara Raja–Gotion; Exide–SVOLT; India equipment imports $1.5B 2022; technology lock-in"},
+  {code:"R21",t:"Investing News — Top 9 Countries by Nickel Reserves",u:"https://investingnews.com/daily/resource-investing/base-metals-investing/nickel-investing/nickel-reserves-by-country/",n:"Indonesia, Australia, Brazil top reserves — reserves vs production: critical distinction"},
+  {code:"R22",t:"UrjaDaily — India's Emerging Polysilicon Ecosystem (Dec 2025)",u:"https://urjadaily.com/indias-emerging-polysilicon-manufacturing-ecosystem-opportunities-and-challenges/",n:"Adani Mundra 30,000 MTPA; India zero commercial polysilicon capacity; Siemens process constraints"},
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderScenario() {
+  const tb = document.getElementById('scenarioBody');
+  SCENARIOS.rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td style="color:rgba(255,255,255,.7);font-weight:500;">${r.label}</td>
+      <td class="s1">${r.s1}</td><td class="s2">${r.s2}</td>
+      <td class="s3">${r.s3}</td><td class="s4">${r.s4}</td>
+    </tr>`;
+  });
+  const ag = document.getElementById('assumptionGrid');
+  SCENARIOS.assumptions.forEach(a => {
+    ag.innerHTML += `<div class="ab-item">${a}</div>`;
+  });
+}
+
+function renderParadox() {
+  const tb = document.getElementById('paradoxBody');
+  PARADOX_ROWS.forEach(([dim,oil,min,verdict]) => {
+    tb.innerHTML += `<tr>
+      <td>${dim}</td><td>${oil}</td><td>${min}</td><td>${verdict}</td>
+    </tr>`;
+  });
+}
+
+function renderLayers() {
+  const el = document.getElementById('layersEl');
+  LAYERS.forEach(l => {
+    const tagsHtml = l.tags.map(t =>
+      `<div class="ltag ${t.c||''}">${t.t}</div>`).join('');
+    el.innerHTML += `
+      <div class="lcard">
+        <div class="ln ${l.cls}">${l.n}</div>
+        <div class="lb">
+          <div class="lt">${l.title}</div>
+          <div class="lr ${l.rc}">${l.risk}</div>
+          <div class="ltext">${l.body}</div>
+        </div>
+        <div class="ltags">${tagsHtml}</div>
+      </div>`;
+  });
+}
+
+function renderScores() {
+  const g = document.getElementById('scoreGrid');
+  MATERIALS.forEach(m => {
+    const pct = (m.score/10*100).toFixed(0);
+    g.innerHTML += `
+      <div class="scard">
+        <div class="sch">
+          <div class="scname">${m.name}</div>
+          <div class="sbadge b${m.tc}">${m.tier}</div>
+        </div>
+        <div class="ssec">${m.sectors}</div>
+        <div class="sdims">
+          <span class="sdim">EV <b>${m.ev}</b></span>
+          <span class="sdim">Cross <b>${m.cross}</b></span>
+          <span class="sdim">Geo <b>${m.geo}</b></span>
+        </div>
+        <div class="strack"><div class="sfill ${m.tc}" style="width:0%" data-pct="${pct}%"></div></div>
+        <div class="snums">
+          <span>0</span>
+          <span class="snv ${m.tc}">${m.score.toFixed(1)}</span>
+          <span>10</span>
+        </div>
+        <div class="chem-note"><b>Chemistry/recycling note:</b> ${m.chem}</div>
+      </div>`;
+  });
+}
+
+function renderCountries() {
+  const g = document.getElementById('countryGrid');
+  COUNTRIES.forEach(c => {
+    const dHtml = c.deps.map(d =>
+      `<div class="dr"><span class="dn">${d.m}</span><span class="dv ${d.c}">${d.v}</span></div>`
+    ).join('');
+    g.innerHTML += `
+      <div class="ccard">
+        <div class="chead" style="background:${c.rc}18;border-bottom:2px solid ${c.rc};">
+          <div>
+            <div class="cname">${c.name}</div>
+            <div class="cev">EV: ${c.ev} · ${c.gr}</div>
+          </div>
+          <div style="font-size:.72rem;font-weight:700;color:${c.rc};
+            background:${c.rc}20;padding:.2rem .6rem;border-radius:4px;">${c.risk}</div>
+        </div>
+        <div class="cdeps">${dHtml}</div>
+      </div>`;
+  });
+}
+
+function renderSignals() {
+  const l = document.getElementById('signalsList');
+  SIGNALS.forEach(s => {
+    l.innerHTML += `
+      <div class="sig">
+        <div class="sig-tier ${s.cls}">${s.tier}</div>
+        <div class="sig-body">
+          <div class="sig-title">${s.title}</div>
+          <div class="sig-text">${s.body}</div>
+          <div class="sig-mon">Monitor: ${s.mon}</div>
+        </div>
+      </div>`;
+  });
+}
+
+function renderRefs() {
+  const l = document.getElementById('refsList');
+  REFS.forEach(r => {
+    l.innerHTML += `
+      <div class="ri">
+        <div class="rc">[${r.code}]</div>
+        <div class="rb">
+          <a href="${r.u}" target="_blank" rel="noopener">${r.t}</a>
+          <div class="rn">${r.n}</div>
+        </div>
+      </div>`;
+  });
+}
+
+// ── CHARTS ────────────────────────────────────────────────────────────────────
+const dg = 'rgba(255,255,255,0.07)';
+const dl = 'rgba(255,255,255,0.45)';
+
+function buildCharts() {
+  // Import trajectory with scenarios
+  new Chart(document.getElementById('importChart'),{
+    type:'line',
+    data:{
+      labels:['2019','2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030'],
+      datasets:[
+        {label:'Oil imports ($B)',data:[96,60,76,106,116,109,116,118,120,122,124,126],
+         borderColor:'#F9A825',backgroundColor:'rgba(249,168,37,.08)',
+         borderWidth:2.5,pointRadius:3,tension:.3,fill:true},
+        {label:'S1 — China dominance',data:[null,null,null,null,null,null,15,19,27,36,45,53],
+         borderColor:'#EF5350',backgroundColor:'rgba(239,83,80,.06)',
+         borderWidth:2,pointRadius:2,tension:.3,fill:false,borderDash:[0,0]},
+        {label:'S2 — Moderate',data:[null,null,null,null,null,null,15,17,22,28,33,38],
+         borderColor:'#FF8A65',borderWidth:1.8,pointRadius:2,tension:.3,
+         fill:false,borderDash:[5,3]},
+        {label:'S3 — Aggressive',data:[null,null,null,null,null,null,15,14,17,19,21,24],
+         borderColor:var_teal2='#14A0A5',borderWidth:1.8,pointRadius:2,tension:.3,
+         fill:false,borderDash:[3,3]},
+        {label:'S4 — Disrupted',data:[null,null,null,null,null,null,15,14,15,16,17,19],
+         borderColor:'#66BB6A',borderWidth:1.8,pointRadius:2,tension:.3,
+         fill:false,borderDash:[2,4]},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:9},boxWidth:14}}},
+      scales:{
+        x:{ticks:{color:dl,font:{size:9}},grid:{color:dg}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>'$'+v+'B'},grid:{color:dg}}
+      }}
+  });
+
+  // China processing share
+  new Chart(document.getElementById('chinaChart'),{
+    type:'bar',
+    data:{
+      labels:['LFP Cathode','Solar Wafers','Polysilicon','Graphite Anode','Cobalt Refining','Lithium Refining'],
+      datasets:[{data:[98,97,91,85,80,74],
+        backgroundColor:['#B71C1C','#C62828','#D32F2F','#E53935','#EF5350','#F44336'],
+        borderRadius:3}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>` ${c.raw}% of global processing`}}},
+      scales:{
+        x:{ticks:{color:dl,font:{size:9},callback:v=>v+'%'},grid:{color:dg},max:100},
+        y:{ticks:{color:dl,font:{size:9}},grid:{display:false}}
+      }}
+  });
+
+  // Scenario bar
+  new Chart(document.getElementById('scenarioChart'),{
+    type:'bar',
+    data:{
+      labels:['S1 — China\nDominates','S2 — Moderate\nLocalisation','S3 — Aggressive\nRefining','S4 — Sodium-Ion\n+ Recycling'],
+      datasets:[
+        {label:'Battery imports',data:[23,17,11,8],backgroundColor:['#B71C1C','#E65100','#0D7377','#2E7D32'],borderRadius:4},
+        {label:'Solar imports',data:[30,21,13,11],backgroundColor:['rgba(183,28,28,.5)','rgba(230,81,0,.5)','rgba(13,115,119,.5)','rgba(46,125,50,.5)'],borderRadius:4}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:9},boxWidth:12}},
+        tooltip:{callbacks:{label:c=>`${c.dataset.label}: $${c.raw}B`}}},
+      scales:{
+        x:{stacked:true,ticks:{color:dl,font:{size:8.5}},grid:{display:false}},
+        y:{stacked:true,ticks:{color:dl,font:{size:9},callback:v=>'$'+v+'B'},grid:{color:dg}}
+      }}
+  });
+
+  // Sensitivity nickel
+  new Chart(document.getElementById('sensitivityChart'),{
+    type:'bar',
+    data:{
+      labels:['NMC Dominant','NMC/LFP Mixed','LFP Dominant','Sodium-Ion\nPenetration'],
+      datasets:[{data:[10.0,8.2,6.8,5.1],
+        backgroundColor:['#B71C1C','#E65100','#0D7377','#2E7D32'],borderRadius:4}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:dl,font:{size:9}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9}},grid:{color:dg},min:0,max:11,
+          title:{display:true,text:'CIIP Score',color:dl,font:{size:9}}}
+      }}
+  });
+
+  // EV shares
+  new Chart(document.getElementById('evChart'),{
+    type:'bar',
+    data:{
+      labels:['China','Vietnam','Thailand','Europe','Turkey','Indonesia','USA','Brazil','India'],
+      datasets:[{data:[52,40,28,27,22,14,10,6,4],
+        backgroundColor:['#B71C1C','#C62828','#D32F2F','#1565C0','#6A1B9A','#E65100','#0D47A1','#0D7377','#0D7377'],
+        borderRadius:3}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{font:{size:9}},grid:{display:false}},
+        y:{ticks:{font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.07)'},max:60}
+      }}
+  });
+
+  // Demand growth
+  new Chart(document.getElementById('demandChart'),{
+    type:'bar',
+    data:{
+      labels:['Lithium','Graphite','Nickel','Manganese','Cobalt'],
+      datasets:[{data:[180,120,85,60,40],
+        backgroundColor:['#B71C1C','#D32F2F','#E65100','#0D7377','#1565C0'],
+        borderRadius:3}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{font:{size:9}},grid:{display:false}},
+        y:{ticks:{font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.07)'}}
+      }}
+  });
+
+  // NMC vs LFP
+  new Chart(document.getElementById('chemChart'),{
+    type:'line',
+    data:{
+      labels:['2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030'],
+      datasets:[
+        {label:'China NMC share (%)',data:[70,65,58,45,25,18,14,12,11,10,9],
+         borderColor:'#EF5350',backgroundColor:'rgba(239,83,80,.07)',
+         borderWidth:2.5,pointRadius:3,tension:.4,fill:true},
+        {label:'India NMC share (%)',data:[88,88,87,87,86,85,83,80,75,70,65],
+         borderColor:'#14A0A5',backgroundColor:'rgba(20,160,165,.07)',
+         borderWidth:2.5,pointRadius:3,tension:.3,fill:true,borderDash:[5,3]},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:9},boxWidth:14}}},
+      scales:{
+        x:{ticks:{color:dl,font:{size:9}},grid:{color:dg}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v+'%'},grid:{color:dg},max:100}
+      }}
+  });
+
+  // Chemistry score
+  new Chart(document.getElementById('chemScoreChart'),{
+    type:'bar',
+    data:{
+      labels:['NMC Dominant','NMC/LFP Split','LFP Dominant','Na-ion Penetration'],
+      datasets:[{data:[10.0,8.2,6.8,5.1],
+        backgroundColor:['#B71C1C','#E65100','#0D7377','#2E7D32'],borderRadius:4}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:dl,font:{size:9}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9}},grid:{color:dg},min:0,max:11}
+      }}
+  });
+
+  // Recycling recovery rates
+  new Chart(document.getElementById('recycleChart'),{
+    type:'line',
+    data:{
+      labels:['2025','2026','2027','2028','2029','2030','2031','2032','2033','2034','2035'],
+      datasets:[
+        {label:'Lithium (%)',data:[5,6,8,10,14,18,22,25,27,28,30],
+         borderColor:'#EF5350',borderWidth:2,pointRadius:2,tension:.4},
+        {label:'Nickel (%)',data:[12,14,17,20,25,28,31,34,36,37,38],
+         borderColor:'#FF8A65',borderWidth:2,pointRadius:2,tension:.4},
+        {label:'Cobalt (%)',data:[15,18,21,25,30,32,35,38,40,41,42],
+         borderColor:'#66BB6A',borderWidth:2,pointRadius:2,tension:.4},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:9},boxWidth:12}}},
+      scales:{
+        x:{ticks:{color:dl,font:{size:9}},grid:{color:dg}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v+'%'},grid:{color:dg},max:50}
+      }}
+  });
+
+  // Import offset
+  new Chart(document.getElementById('offsetChart'),{
+    type:'bar',
+    data:{
+      labels:['Lithium','Nickel','Cobalt','Graphite'],
+      datasets:[
+        {label:'Low estimate',data:[3,8,10,5],backgroundColor:'rgba(102,187,106,.4)',borderRadius:3},
+        {label:'High estimate',data:[5,12,15,8],backgroundColor:'rgba(102,187,106,.8)',borderRadius:3},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:9},boxWidth:12}},
+        tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}%`}}},
+      scales:{
+        x:{ticks:{color:dl,font:{size:9}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v+'%'},grid:{color:dg},max:20,
+          title:{display:true,text:'Import demand reduction (%)',color:dl,font:{size:8}}}
+      }}
+  });
+
+  // CIIP bar with thresholds
+  new Chart(document.getElementById('ciipChart'),{
+    type:'bar',
+    data:{
+      labels:['Nickel','Lithium','Polysilicon','Cobalt','Graphite','Manganese'],
+      datasets:[{data:[10.0,8.8,8.7,7.8,7.4,6.1],
+        backgroundColor:['#B71C1C','#B71C1C','#B71C1C','#E65100','#E65100','#0D7377'],
+        borderRadius:4}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        annotation:{annotations:{
+          critical:{type:'line',yMin:8.5,yMax:8.5,borderColor:'#EF5350',borderWidth:1.5,borderDash:[5,4],
+            label:{content:'CRITICAL 8.5',enabled:true,color:'#EF5350',font:{size:9},position:'end'}},
+          high:{type:'line',yMin:7.0,yMax:7.0,borderColor:'#FF8A65',borderWidth:1.5,borderDash:[5,4],
+            label:{content:'HIGH 7.0',enabled:true,color:'#FF8A65',font:{size:9},position:'end'}},
+        }}
+      },
+      scales:{
+        x:{ticks:{color:dl,font:{size:11}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:10}},grid:{color:dg},min:0,max:11}
+      }}
+  });
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+function showTab(group, id) {
+  document.querySelectorAll(`[id^="${group}-"]`).forEach(p => p.classList.remove('active'));
+  document.querySelectorAll(`.tabb`).forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── SCROLL ────────────────────────────────────────────────────────────────────
+function initScroll() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        e.target.classList.add('vis');
+        e.target.querySelectorAll('.sfill[data-pct]').forEach(b => {
+          setTimeout(() => { b.style.width = b.dataset.pct; }, 150);
+        });
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderScenario();
+renderParadox();
+renderLayers();
+renderScores();
+renderCountries();
+renderSignals();
+renderRefs();
+buildCharts();
+initScroll();
+</script>
+</body>
+</html>

@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CIIP Battery Intelligence v4.0 — India's Green Import Trap</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1F3A;--navy2:#0D2B4E;--teal:#0D7377;--teal2:#14A0A5;
+  --crimson:#B71C1C;--amber:#E65100;--gold:#F9A825;
+  --slate:#37474F;--mist:#ECEFF1;--white:#FFFFFF;--off:#F8FAFB;
+  --border:#CFD8DC;--text2:#546E7A;--green:#2E7D32;
+  --mono:'JetBrains Mono',monospace;
+  --font-head:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:#06090f;color:#fff;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(6,9,15,.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(13,115,119,.2);}
+.nav-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;
+  justify-content:space-between;height:50px;padding:0 1.5rem;}
+.nav-logo{font-family:var(--font-head);font-size:.9rem;}
+.nav-logo span{color:var(--teal2);}
+.v4p{background:rgba(249,168,37,.2);color:var(--gold);font-size:.62rem;
+  padding:.12rem .45rem;border-radius:3px;font-weight:700;margin-left:.35rem;}
+.nav-links{display:flex;gap:1rem;list-style:none;flex-wrap:wrap;}
+.nav-links a{font-size:.65rem;color:rgba(255,255,255,.42);text-decoration:none;
+  letter-spacing:.06em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--teal2);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(140deg,#030609 0%,#06090f 45%,#080e1a 100%);}
+.hgrid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(13,115,119,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(13,115,119,.05) 1px,transparent 1px);
+  background-size:72px 72px;}
+.orb{position:absolute;pointer-events:none;}
+.o1{width:700px;height:700px;background:radial-gradient(circle,rgba(13,115,119,.12) 0%,transparent 65%);top:-200px;right:-200px;}
+.o2{width:500px;height:500px;background:radial-gradient(circle,rgba(183,28,28,.09) 0%,transparent 65%);bottom:50px;left:-100px;}
+.o3{width:350px;height:350px;background:radial-gradient(circle,rgba(249,168,37,.07) 0%,transparent 65%);top:45%;left:42%;}
+.hc{max-width:1300px;margin:0 auto;padding:7rem 2rem 4rem;position:relative;z-index:1;}
+.hpill{display:inline-flex;align-items:center;gap:.45rem;
+  background:rgba(13,115,119,.1);border:1px solid rgba(13,115,119,.3);
+  border-radius:999px;padding:.28rem .85rem;margin-bottom:1.6rem;}
+.hdot{width:5px;height:5px;border-radius:50%;background:var(--teal2);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hpill span{font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal2);}
+h1.htitle{font-family:var(--font-head);font-size:clamp(2.5rem,5vw,4.8rem);
+  line-height:1.04;letter-spacing:-.025em;margin-bottom:1.2rem;}
+h1.htitle em{font-style:italic;color:var(--teal2);}
+h1.htitle .dim{color:rgba(255,255,255,.32);}
+.hsub{font-size:.98rem;color:rgba(255,255,255,.5);max-width:580px;
+  line-height:1.8;margin-bottom:1.5rem;font-weight:300;}
+.v4bar{display:flex;align-items:flex-start;gap:.7rem;
+  background:rgba(249,168,37,.07);border:1px solid rgba(249,168,37,.2);
+  border-radius:8px;padding:.7rem 1rem;margin-bottom:2.5rem;max-width:880px;}
+.v4bar-title{font-size:.7rem;font-weight:700;color:var(--gold);
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem;}
+.v4bar-body{font-size:.76rem;color:rgba(255,255,255,.52);line-height:1.55;}
+.hstats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.04);
+  border-radius:10px;overflow:hidden;max-width:1050px;}
+.hs{padding:1.2rem .85rem;background:#07090e;text-align:center;}
+.hsv{font-family:var(--font-head);font-size:1.75rem;margin-bottom:.2rem;}
+.hsv.r{color:#EF5350;}.hsv.a{color:var(--gold);}.hsv.t{color:var(--teal2);}.hsv.g{color:#66BB6A;}
+.hsl{font-size:.63rem;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.38);line-height:1.35;}
+.hst{font-size:.58rem;color:rgba(255,255,255,.22);margin-top:.18rem;}
+
+/* SECTIONS */
+section{padding:4.5rem 1.5rem;}
+.container{max-width:1300px;margin:0 auto;}
+.stag{display:inline-block;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--teal2);margin-bottom:.55rem;}
+.sh2{font-family:var(--font-head);font-size:clamp(1.6rem,2.7vw,2.6rem);
+  line-height:1.15;margin-bottom:.85rem;}
+.sbody{font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.82;
+  max-width:700px;font-weight:300;}
+.salt{background:#040710;}
+.slight{background:var(--white);color:var(--navy);}
+.slight .sh2{color:var(--navy);}
+.slight .sbody{color:var(--slate);}
+.slight .stag{color:var(--teal);}
+
+/* BOXES */
+.box{border-radius:9px;padding:1.05rem 1.3rem;margin:.75rem 0;}
+.box-navy{background:rgba(13,31,58,.8);border:1px solid rgba(13,115,119,.25);}
+.box-warn{background:rgba(249,168,37,.07);border:1px solid rgba(249,168,37,.22);}
+.box-crit{background:rgba(183,28,28,.07);border:1px solid rgba(183,28,28,.22);}
+.box-ok{background:rgba(46,125,50,.07);border:1px solid rgba(46,125,50,.22);}
+.box-red-l{border-left:3px solid var(--crimson);border-radius:0 8px 8px 0;
+  background:rgba(183,28,28,.06);padding:.85rem 1.1rem;}
+.box-gold-l{border-left:3px solid var(--gold);border-radius:0 8px 8px 0;
+  background:rgba(249,168,37,.05);padding:.85rem 1.1rem;}
+.box-teal-l{border-left:3px solid var(--teal2);border-radius:0 8px 8px 0;
+  background:rgba(13,115,119,.06);padding:.85rem 1.1rem;}
+.box-tag{font-size:.67rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:.35rem;}
+.box-navy .box-tag,.box-teal-l .box-tag{color:var(--teal2);}
+.box-warn .box-tag,.box-gold-l .box-tag{color:var(--gold);}
+.box-crit .box-tag,.box-red-l .box-tag{color:#EF9A9A;}
+.box-ok .box-tag{color:#81C784;}
+.box-text{font-size:.8rem;color:rgba(255,255,255,.62);line-height:1.68;}
+.box-text b{color:rgba(255,255,255,.88);font-weight:500;}
+.box-text.light{color:var(--slate);}
+.box-text.light b{color:var(--navy);}
+
+/* THESIS */
+.thesis-q{margin:1.75rem 0;padding:1.6rem 2rem;
+  border-left:3px solid var(--gold);background:rgba(249,168,37,.04);
+  border-radius:0 10px 10px 0;}
+.thesis-q p{font-family:var(--font-head);font-size:1.15rem;
+  line-height:1.65;font-style:italic;color:rgba(255,255,255,.9);}
+
+/* TIER SYSTEM */
+.tier-tag{font-size:.6rem;font-weight:700;letter-spacing:.04em;
+  padding:.1rem .42rem;border-radius:3px;vertical-align:middle;margin-left:.3rem;}
+.tt-a{background:rgba(67,160,71,.2);color:#81C784;}
+.tt-b{background:rgba(230,81,0,.2);color:#FF8A65;}
+.tt-c{background:rgba(183,28,28,.2);color:#EF9A9A;}
+.conf-legend{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.cl-i{display:flex;align-items:center;gap:.4rem;font-size:.73rem;color:rgba(255,255,255,.58);}
+.cl-d{width:8px;height:8px;border-radius:50%;}
+.cla{background:#43A047;}.clb{background:var(--amber);}.clc{background:var(--crimson);}
+
+/* TABLES */
+.itbl{width:100%;border-collapse:collapse;font-size:.78rem;margin:1rem 0;}
+.itbl th{padding:.58rem .8rem;text-align:left;background:rgba(13,31,58,.9);
+  color:rgba(255,255,255,.68);font-weight:500;font-size:.68rem;
+  letter-spacing:.06em;text-transform:uppercase;
+  border-bottom:1px solid rgba(255,255,255,.08);}
+.itbl td{padding:.62rem .8rem;border-bottom:1px solid rgba(255,255,255,.05);
+  vertical-align:top;line-height:1.45;color:rgba(255,255,255,.68);}
+.itbl td strong{color:rgba(255,255,255,.88);font-weight:500;}
+.itbl tr:last-child td{border-bottom:none;}
+.itbl tr:hover td{background:rgba(255,255,255,.02);}
+.ltbl{width:100%;border-collapse:collapse;font-size:.78rem;margin:1rem 0;}
+.ltbl th{padding:.58rem .8rem;text-align:left;background:#E8EEF4;
+  color:var(--navy);font-weight:600;font-size:.68rem;
+  letter-spacing:.06em;text-transform:uppercase;}
+.ltbl td{padding:.62rem .8rem;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.45;color:var(--slate);}
+.ltbl td strong{color:var(--navy);font-weight:600;}
+.ltbl tr:last-child td{border-bottom:none;}
+.ltbl tr:hover td{background:#F5F8FA;}
+
+/* IO MATRIX */
+.io-wrap{overflow-x:auto;margin:1.1rem 0;}
+.io-t{border-collapse:collapse;font-size:.72rem;min-width:680px;}
+.io-t th{padding:.48rem .65rem;background:rgba(13,31,58,.95);
+  color:rgba(255,255,255,.65);font-weight:600;font-size:.65rem;
+  letter-spacing:.05em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.08);}
+.io-t td{padding:.48rem .65rem;border:1px solid rgba(255,255,255,.05);
+  text-align:center;font-family:var(--mono);font-size:.7rem;}
+.io-hi{background:rgba(183,28,28,.25);color:#EF9A9A;font-weight:700;}
+.io-med{background:rgba(230,81,0,.15);color:#FF8A65;}
+.io-lo{background:rgba(13,115,119,.12);color:var(--teal2);}
+.io-zero{color:rgba(255,255,255,.2);}
+.io-lbl{text-align:left!important;font-family:var(--font-body)!important;
+  font-size:.73rem!important;color:rgba(255,255,255,.7)!important;font-weight:500;}
+
+/* SCORES */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(305px,1fr));
+  gap:1rem;margin:1.6rem 0;}
+.scard{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);
+  border-radius:9px;padding:1rem 1.15rem;transition:border-color .2s;}
+.scard:hover{border-color:rgba(13,160,165,.3);}
+.sch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.32rem;}
+.scn{font-size:.92rem;font-weight:600;}
+.sbadge{padding:.13rem .58rem;border-radius:999px;font-size:.65rem;font-weight:700;letter-spacing:.04em;}
+.bc{background:rgba(183,28,28,.2);color:#EF5350;}
+.bh{background:rgba(230,81,0,.2);color:#FF8A65;}
+.bm{background:rgba(13,115,119,.2);color:var(--teal2);}
+.ssec{font-size:.71rem;color:rgba(255,255,255,.36);margin-bottom:.52rem;}
+.sdims{display:flex;gap:1rem;margin-bottom:.58rem;}
+.sdim{font-size:.71rem;color:rgba(255,255,255,.4);}
+.sdim b{color:rgba(255,255,255,.78);}
+.strack{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:.38rem;}
+.sfill{height:100%;border-radius:3px;width:0%;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+.sfill.c{background:linear-gradient(90deg,#B71C1C,#EF5350);}
+.sfill.h{background:linear-gradient(90deg,#E65100,#FF7043);}
+.sfill.m{background:linear-gradient(90deg,#0D7377,#14A0A5);}
+.snums{display:flex;justify-content:space-between;font-size:.68rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;}
+.snv{font-size:1.2rem;font-weight:700;}
+.snv.c{color:#EF5350;}.snv.h{color:#FF8A65;}.snv.m{color:var(--teal2);}
+.cnote{background:rgba(249,168,37,.05);border-left:2px solid rgba(249,168,37,.4);
+  border-radius:0 5px 5px 0;padding:.5rem .7rem;margin-top:.4rem;
+  font-size:.71rem;color:rgba(255,255,255,.5);line-height:1.5;}
+.cnote b{color:var(--gold);font-weight:500;}
+
+/* LAYERS */
+.layers{display:flex;flex-direction:column;gap:.8rem;margin:1.6rem 0;}
+.lcard{display:grid;grid-template-columns:64px 1fr 195px;
+  border-radius:9px;overflow:hidden;border:1px solid rgba(255,255,255,.06);
+  transition:transform .2s;}
+.lcard:hover{transform:translateY(-2px);}
+.ln{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--font-head);font-size:1.9rem;padding:1rem .5rem;}
+.ln.am{background:var(--amber);}.ln.rd{background:var(--crimson);}
+.lb{padding:.95rem 1.15rem;background:rgba(255,255,255,.025);}
+.lt{font-size:.88rem;font-weight:600;margin-bottom:.2rem;}
+.lr{font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.42rem;}
+.lr.am{color:var(--gold);}.lr.rd{color:#EF9A9A;}
+.ltext{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.62;font-weight:300;}
+.ltags{padding:.95rem;display:flex;flex-direction:column;justify-content:center;
+  gap:.3rem;background:rgba(6,9,15,.7);}
+.ltag{font-size:.68rem;padding:.2rem .48rem;background:rgba(183,28,28,.18);color:#EF9A9A;border-radius:3px;}
+.ltag.t{background:rgba(13,115,119,.18);color:var(--teal2);}
+
+/* UBO */
+.ubo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.9rem;margin:1.5rem 0;}
+.ubo-card{border-radius:9px;padding:1.05rem 1.1rem;border:1px solid rgba(255,255,255,.07);}
+.ubo-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.55rem;}
+.ubo-name{font-size:.88rem;font-weight:600;color:rgba(255,255,255,.88);}
+.ubo-origin{font-size:.68rem;color:rgba(255,255,255,.38);}
+.ubo-row{display:flex;justify-content:space-between;padding:.28rem 0;
+  border-bottom:1px solid rgba(255,255,255,.05);font-size:.75rem;}
+.ubo-row:last-child{border-bottom:none;}
+.ubo-key{color:rgba(255,255,255,.45);}
+.ubo-val{font-weight:600;}
+.ubo-val.cn{color:#EF5350;}.ubo-val.ok{color:#66BB6A;}.ubo-val.mx{color:#FFB74D;}
+
+/* PCAM CHEMISTRY */
+.chem-chain{display:flex;flex-direction:column;gap:.5rem;margin:1.5rem 0;}
+.chem-step{display:grid;grid-template-columns:180px 1fr auto;gap:0;
+  border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.07);}
+.cs-label{padding:.8rem .9rem;display:flex;align-items:center;
+  font-size:.78rem;font-weight:600;}
+.cs-body{padding:.8rem 1rem;background:rgba(255,255,255,.02);
+  font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.55;}
+.cs-india{padding:.8rem .9rem;display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;text-align:center;min-width:90px;}
+.step-2a{background:rgba(183,28,28,.18);}
+.step-2b{background:rgba(183,28,28,.22);}
+.step-2c{background:rgba(230,81,0,.18);}
+.step-2d{background:rgba(230,81,0,.22);}
+.step-2e{background:rgba(13,115,119,.2);}
+.ind-zero{background:rgba(183,28,28,.15);color:#EF9A9A;}
+.ind-part{background:rgba(249,168,37,.12);color:var(--gold);}
+.ind-ok{background:rgba(46,125,50,.15);color:#81C784;}
+
+/* FEAS */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:.85rem;margin:1.4rem 0;}
+.fcard{border-radius:9px;padding:1.05rem;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);}
+.fcard-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem;}
+.fcard-icon{font-size:.95rem;}
+.fcard-title{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.85);}
+.fcard-body{font-size:.76rem;color:rgba(255,255,255,.48);line-height:1.6;}
+.barrier{display:inline-block;background:rgba(183,28,28,.18);color:#EF9A9A;
+  font-size:.66rem;padding:.1rem .42rem;border-radius:3px;margin:.12rem .08rem;font-weight:600;}
+
+/* TIMELINE */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  margin:1.4rem 0;border:1px solid rgba(255,255,255,.08);border-radius:9px;overflow:hidden;}
+.tg{padding:1.05rem;}
+.tg.best{background:rgba(46,125,50,.08);}
+.tg.base{background:rgba(249,168,37,.06);}
+.tg.delay{background:rgba(183,28,28,.06);}
+.tg-label{font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem;}
+.tg.best .tg-label{color:#81C784;}.tg.base .tg-label{color:var(--gold);}.tg.delay .tg-label{color:#EF9A9A;}
+.tgi{font-size:.76rem;color:rgba(255,255,255,.52);padding:.22rem 0;
+  border-bottom:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;gap:.4rem;}
+.tgi:last-child{border-bottom:none;}
+.tgy{font-weight:600;font-size:.72rem;white-space:nowrap;}
+.tg.best .tgy{color:#81C784;}.tg.base .tgy{color:var(--gold);}.tg.delay .tgy{color:#EF9A9A;}
+
+/* MITIGATION */
+.mit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:.9rem;margin:1.5rem 0;}
+.mit-card{border-radius:9px;padding:1.1rem;border:1px solid;}
+.mit-au{background:rgba(46,125,50,.06);border-color:rgba(67,160,71,.25);}
+.mit-be{background:rgba(13,115,119,.06);border-color:rgba(13,160,165,.25);}
+.mit-lfp{background:rgba(249,168,37,.06);border-color:rgba(249,168,37,.25);}
+.mit-rec{background:rgba(21,101,192,.07);border-color:rgba(21,101,192,.25);}
+.mit-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem;}
+.mit-icon{font-size:1rem;}
+.mit-title{font-size:.88rem;font-weight:600;}
+.mit-au .mit-title{color:#81C784;}.mit-be .mit-title{color:var(--teal2);}
+.mit-lfp .mit-title{color:var(--gold);}.mit-rec .mit-title{color:#64B5F6;}
+.mit-body{font-size:.77rem;color:rgba(255,255,255,.52);line-height:1.6;}
+.mit-action{margin-top:.55rem;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.35);
+  border-top:1px solid rgba(255,255,255,.06);padding-top:.4rem;}
+
+/* ROADMAP */
+.rcols{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.4rem 0;}
+.rc{border-radius:9px;padding:1.05rem;border:1px solid;}
+.rc30{background:rgba(183,28,28,.05);border-color:rgba(183,28,28,.2);}
+.rc90{background:rgba(230,81,0,.05);border-color:rgba(230,81,0,.2);}
+.rc365{background:rgba(13,115,119,.05);border-color:rgba(13,115,119,.2);}
+.rc-label{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;}
+.rc30 .rc-label{color:#EF9A9A;}.rc90 .rc-label{color:#FF8A65;}.rc365 .rc-label{color:var(--teal2);}
+.rci{font-size:.76rem;color:rgba(255,255,255,.52);padding:.2rem 0;
+  display:flex;gap:.38rem;align-items:flex-start;line-height:1.45;}
+.rci::before{content:"→";flex-shrink:0;margin-top:.05rem;}
+.rc30 .rci::before{color:#EF9A9A;}.rc90 .rci::before{color:#FF8A65;}.rc365 .rci::before{color:var(--teal2);}
+
+/* SIGNALS */
+.sigs{display:flex;flex-direction:column;gap:.65rem;margin:1.6rem 0;}
+.sig{display:grid;grid-template-columns:70px 1fr;border-radius:8px;
+  overflow:hidden;border:1px solid rgba(255,255,255,.06);}
+.sig-t{display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  writing-mode:vertical-lr;transform:rotate(180deg);padding:.8rem .32rem;}
+.sig-t.c{background:var(--crimson);}.sig-t.h{background:var(--amber);}.sig-t.m{background:var(--teal);}
+.sig-b{padding:.85rem 1.1rem;background:rgba(255,255,255,.02);}
+.sig-title{font-size:.85rem;font-weight:600;margin-bottom:.2rem;}
+.sig-text{font-size:.75rem;color:rgba(255,255,255,.47);line-height:1.55;font-weight:300;}
+.sig-mon{font-size:.68rem;color:var(--teal2);margin-top:.3rem;font-style:italic;}
+
+/* COUNTRY */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin:1.6rem 0;}
+.ccard{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:9px;overflow:hidden;}
+.chead{padding:.72rem .9rem;display:flex;justify-content:space-between;align-items:center;}
+.cname{font-size:.88rem;font-weight:700;}
+.cev{font-size:.67rem;color:rgba(255,255,255,.4);margin-top:1px;}
+.cdeps{padding:.58rem .9rem;}
+.dr{display:flex;justify-content:space-between;padding:.24rem 0;
+  border-bottom:1px solid rgba(255,255,255,.04);font-size:.72rem;}
+.dr:last-child{border-bottom:none;}
+.dn{color:rgba(255,255,255,.43);}.dv{font-weight:600;}
+.dv.hi{color:#EF5350;}.dv.lo{color:#66BB6A;}.dv.md{color:#FFB74D;}
+
+/* CHARTS */
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin:1.6rem 0;}
+.ccd{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:1.15rem;}
+.ccl{background:var(--white);border-radius:9px;padding:1.15rem;border:1px solid var(--border);}
+.ctd{font-size:.8rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:.13rem;}
+.ctl{font-size:.8rem;font-weight:600;color:var(--navy);margin-bottom:.13rem;}
+.csd{font-size:.68rem;color:rgba(255,255,255,.34);margin-bottom:.8rem;}
+.csl{font-size:.68rem;color:var(--text2);margin-bottom:.8rem;}
+.cw{position:relative;height:235px;}
+.cwt{position:relative;height:280px;}
+
+/* REFS */
+.refs{display:flex;flex-direction:column;gap:.32rem;margin:1.2rem 0;}
+.ri{display:grid;grid-template-columns:44px 1fr;gap:.55rem;padding:.48rem 0;border-bottom:1px solid rgba(0,0,0,.07);}
+.rc2{font-size:.66rem;font-weight:700;color:var(--teal);padding-top:.04rem;}
+.rb{font-size:.73rem;color:var(--slate);line-height:1.5;}
+.rb a{color:var(--teal);text-decoration:none;}
+.rb a:hover{text-decoration:underline;}
+.rn{font-size:.67rem;color:var(--text2);margin-top:.1rem;font-style:italic;}
+.ct-a{display:inline-block;font-size:.6rem;font-weight:700;padding:.07rem .38rem;
+  border-radius:3px;margin-left:.25rem;background:rgba(67,160,71,.15);color:#43A047;}
+.ct-b{display:inline-block;font-size:.6rem;font-weight:700;padding:.07rem .38rem;
+  border-radius:3px;margin-left:.25rem;background:rgba(230,81,0,.12);color:var(--amber);}
+.ct-c{display:inline-block;font-size:.6rem;font-weight:700;padding:.07rem .38rem;
+  border-radius:3px;margin-left:.25rem;background:rgba(183,28,28,.12);color:var(--crimson);}
+.disclaimer{background:var(--mist);border-radius:8px;padding:.85rem 1.05rem;
+  font-size:.73rem;color:var(--text2);line-height:1.6;margin-top:1rem;}
+
+/* TABS */
+.tbar{display:flex;gap:.38rem;flex-wrap:wrap;margin-bottom:1rem;}
+.tabb{padding:.36rem .88rem;font-size:.73rem;border:1px solid rgba(255,255,255,.1);
+  border-radius:5px;cursor:pointer;background:transparent;
+  color:rgba(255,255,255,.42);transition:all .15s;font-family:var(--font-body);}
+.tabb.active{background:var(--teal2);border-color:var(--teal2);color:#fff;}
+.tpanel{display:none;}.tpanel.active{display:block;}
+
+/* MOTIF */
+.motif{background:var(--navy);text-align:center;padding:2.5rem 2rem;
+  border-top:1px solid rgba(13,115,119,.2);}
+.mq{font-family:var(--font-head);font-size:1.22rem;font-style:italic;
+  color:rgba(255,255,255,.58);margin-bottom:.55rem;}
+.ma{font-size:.7rem;color:rgba(255,255,255,.26);letter-spacing:.1em;text-transform:uppercase;}
+
+/* ANIM */
+.fi{opacity:0;transform:translateY(15px);transition:opacity .5s,transform .5s;}
+.fi.vis{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  .hstats{grid-template-columns:repeat(3,1fr);}
+  .cg2{grid-template-columns:1fr;}
+  .tgrid{grid-template-columns:1fr;}
+  .rcols{grid-template-columns:1fr;}
+  .lcard{grid-template-columns:58px 1fr;}
+  .ltags{display:none;}
+  .chem-step{grid-template-columns:140px 1fr;}
+  .cs-india{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">CIIP <span>Battery</span> Intelligence<span class="v4p">v4.0</span></div>
+    <ul class="nav-links">
+      <li><a href="#thesis">Thesis</a></li>
+      <li><a href="#chokepoint">Growth Chokepoint</a></li>
+      <li><a href="#pcam">pCAM Chemistry</a></li>
+      <li><a href="#ubo">UBO Risk</a></li>
+      <li><a href="#jk">J&K Reality</a></li>
+      <li><a href="#leontief">Leontief I-O</a></li>
+      <li><a href="#scores">CIIP Scores</a></li>
+      <li><a href="#chemistry">Chemistry Clause</a></li>
+      <li><a href="#execution">India Execution</a></li>
+      <li><a href="#mitigation">Mitigation</a></li>
+      <li><a href="#empirical">Roadmap</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hgrid"></div>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="hc">
+    <div class="hpill"><div class="hdot"></div>
+      <span>CIIP Battery Intelligence v4.0 · Six-Exchange Research Synthesis · June 2026</span>
+    </div>
+    <h1 class="htitle">India's <em>Green</em><br><span class="dim">Import Trap</span></h1>
+    <p class="hsub">A strategic dependency analysis, industrial resilience framework, and operational intelligence model for electrification-era supply chains. This is not a commodity price forecast. It is a molecular-level mapping of the geopolitical and chemical battlefield of the next decade.</p>
+    <div class="v4bar">
+      <div>
+        <div class="v4bar-title">v4.0 — Six Research Upgrades Integrated</div>
+        <div class="v4bar-body">pCAM molecular chokepoint · UBO Risk methodology · J&K policy delusion disqualified · Growth chokepoint vs fuel trap · Chemistry Longevity Clause · Diversification mirage dissolved · Nickel Variant A/B split · Midstream localisation optical illusion named</div>
+      </div>
+    </div>
+    <div class="hstats">
+      <div class="hs"><div class="hsv r">$116B</div><div class="hsl">Oil Import FY25</div><div class="hst">Tier A · IEEFA 2026</div></div>
+      <div class="hs"><div class="hsv r">$19–53B</div><div class="hsl">Clean Energy 2030</div><div class="hst">Tier C · Scenario range</div></div>
+      <div class="hs"><div class="hsv a">ZERO</div><div class="hsl">India Li Refining</div><div class="hst">Tier A · Not a paradox</div></div>
+      <div class="hs"><div class="hsv t">10.0</div><div class="hsl">Nickel CIIP Score</div><div class="hst">Tier B · Expert calibrated</div></div>
+      <div class="hs"><div class="hsv g">UBO</div><div class="hsl">Ultimate Beneficiary</div><div class="hst">Core methodology v4.0</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section id="thesis" class="salt">
+<div class="container fi">
+  <span class="stag">01 — Central Thesis</span>
+  <h2 class="sh2">The Substitution India Is Not Discussing</h2>
+  <p class="sbody">This framework answers one question: what second-order industrial dependencies emerge when a civilisation electrifies? The answer exposes a structural risk that India's current policy architecture is not designed to detect — because it is invisible at the country-of-origin level and only visible at the molecular processing level.</p>
+  <div class="thesis-q">
+    <p>"Critical mineral dependency may become more strategically rigid and technologically irreversible than oil dependency — despite lower headline import values. Once India's EV and solar industries are built around Chinese cell chemistry, Chinese wafer specifications, and Chinese process equipment, switching is not a 6-month logistics problem. It is a 10-year industrial rebuild. The supplier changes from Riyadh to Beijing. The leverage does not reduce. It disappears."</p>
+  </div>
+  <div class="box box-navy">
+    <div class="box-tag">Why oil and mineral dependency are structurally different — not equivalent</div>
+    <div class="box-text">Oil is a <b>flow commodity</b> consumed continuously — every barrel imported creates no lock-in for tomorrow. Critical minerals go into <b>capital goods with 8–15 year lifecycles</b>. A battery gigafactory built on Chinese LFP technology in 2026 runs on that technology until 2038+. The dependency is structural and technologically embedded, not annual and substitutable. Oil has partial substitutes tradeable on liquid global markets. Battery-grade lithium hydroxide processed to a Chinese-specification has no short-term substitute for factories built around that specification. The correct claim: critical mineral dependency may prove <b>more strategically rigid and harder to exit</b> — not that headline import values are identical.</div>
+  </div>
+</div>
+</section>
+
+<!-- GROWTH CHOKEPOINT -->
+<section id="chokepoint">
+<div class="container fi">
+  <span class="stag">02 — The Growth Chokepoint (Not a Daily Fuel Trap)</span>
+  <h2 class="sh2">This Is an Industrial Expansion Trap. Not a Petrol Queue Problem.</h2>
+  <p class="sbody">The most common misreading of this framework: "India's grid runs today, India's vehicles run today — where is the crisis?" That question betrays a fundamental confusion between two structurally different risk categories. This section makes the distinction explicit and permanent.</p>
+  <div class="box box-crit">
+    <div class="box-tag">The precise failure mode — CapEx stranding</div>
+    <div class="box-text">India's existing vehicle fleet operates today. India's existing grid functions today. The critical mineral risk does not manifest as a daily operational failure. It manifests as <b>industrial expansion paralysis</b>.<br><br>
+    The scenario: an Indian infrastructure fund commits ₹8,000 crore to a battery gigafactory in Gujarat. Construction completes in 2028. The plant is ready. The precursor chemical supply contracts — NiSO₄ from Belgium, CoSO₄ and MnSO₄ from Chinese processors, graphite anode from Chinese suppliers — are either restricted by Chinese export controls, redirected by Chinese corporate ownership decisions at Indonesian HPAL plants, or priced at a level that destroys the cell economics against imported Chinese cells. The ₹8,000 crore is <b>stranded</b>. The capacity exists on paper. It cannot operate at viable economics. This is not a fuel shortage. It is an inflection-point trap that is invisible until the moment of capital commitment — and by that moment, the investment is already deployed and irrecoverable.<br><br>
+    <b>India's existing economy continues to function. India's next economy — the electrified, domestically manufactured, clean energy economy — cannot be built.</b> That is the crisis this framework is designed to prevent.</div>
+  </div>
+  <div class="cg2">
+    <div class="ccd">
+      <div class="ctd">Oil Disruption vs Mineral Disruption — Recovery Timeline Asymmetry</div>
+      <div class="csd">Time to restore supply after disruption event — the asymmetry is the risk</div>
+      <div class="cw"><canvas id="recoveryChart"></canvas></div>
+    </div>
+    <div class="ccd">
+      <div class="ctd">CapEx Stranding Risk by Sector — If Supply Freezes in 2028</div>
+      <div class="csd">Estimated stranded investment (₹ Billion) if mineral supply contracts are disrupted post-commitment (Tier C)</div>
+      <div class="cw"><canvas id="strandingChart"></canvas></div>
+    </div>
+  </div>
+  <div class="box box-gold-l">
+    <div class="box-tag">The timeline asymmetry that makes this uniquely dangerous</div>
+    <div class="box-text">When India's crude oil supply is disrupted, strategic petroleum reserves cover 9–14 days. Alternative crude routing takes 3–6 weeks. The harm is fast and recoverable. When India's battery-grade lithium hydroxide supply is disrupted, there is <b>no strategic reserve</b>, no spot market, no alternative refiner at scale outside a Chinese processing system, and a 4–7 year greenfield commissioning timeline for any new domestic capacity. The asymmetry between disruption speed (immediate) and recovery speed (years to decades) is what makes this structurally more dangerous for long-duration industrial planning than any standard commodity risk.</div>
+  </div>
+</div>
+</section>
+
+<!-- PCAM MOLECULAR CHOKEPOINT -->
+<section id="pcam" class="salt">
+<div class="container fi">
+  <span class="stag">03 — The pCAM Molecular Chokepoint (New in v4.0)</span>
+  <h2 class="sh2">Midstream Localisation Is an Optical Illusion. Here Is the Molecular Proof.</h2>
+  <p class="sbody">When India builds a domestic cathode precursor plant and claims midstream localisation, the analytical question is not where the reactor sits. It is what enters the reactor. The answer exposes the deepest layer of import dependency in India's battery supply chain — one that no trade statistics, customs certificate, or PLI scheme currently addresses.</p>
+  <div class="box box-navy">
+    <div class="box-tag">The pCAM Synthesis — What Actually Happens in an Indian Reactor</div>
+    <div class="box-text">
+      Battery-grade NMC cathode active material (CAM) requires a two-stage synthesis. Stage one produces the precursor cathode active material (pCAM). Stage two converts pCAM into CAM through high-temperature calcination.<br><br>
+      <b>The pCAM synthesis process:</b> Nickel sulphate (NiSO₄·6H₂O), cobalt sulphate (CoSO₄·7H₂O), and manganese sulphate (MnSO₄·H₂O) — dissolved in deionised water — are fed into a continuous stirred tank reactor (CSTR). Sodium hydroxide (NaOH) solution is simultaneously dosed to raise the reactor pH to 11–12, causing the dissolved metal ions to co-precipitate as mixed metal hydroxides: Ni(OH)₂, Co(OH)₂, and Mn(OH)₂ forming a single mixed hydroxide precursor (MHP) particle. Ammonium hydroxide (NH₄OH) is dosed as a chelating agent — it complexes with the metal ions in solution, slowing and controlling precipitation kinetics to produce uniform, dense, spherical secondary particles of 10–15 microns diameter. This spherical morphology is not cosmetic: it determines tap density, which controls how much active material fits into a given electrode volume, which directly determines cell energy density.<br><br>
+      The NaOH precipitation reaction increases the bulk mass and volume of the resulting pCAM relative to the input metal sulphates — creating the appearance of a larger, domestically produced intermediate. The import dependency has not been eliminated. It has been <b>pushed one step upstream, made invisible in trade statistics, and wrapped in a domestic manufacturing claim</b>.
+    </div>
+  </div>
+
+  <div style="font-size:.76rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em;margin:1.5rem 0 .75rem;">
+    India's Midstream Supply Chain — Layer-by-Layer Dependency Analysis
+  </div>
+  <div class="chem-chain" id="chemChain"></div>
+
+  <div class="box box-crit" style="margin-top:1rem;">
+    <div class="box-tag">The Optical Illusion — Precisely Diagnosed</div>
+    <div class="box-text">An Indian pCAM plant is a reaction vessel that converts <b>imported Chinese-processed metal sulphates</b> into a mixed hydroxide powder using domestically available NaOH and NH₄OH. The domestic value addition is the reactor operation and precipitation chemistry. The strategic value addition is <b>approximately zero</b> — because the critical chemical intelligence, the processing complexity, and the geopolitical leverage all reside in the metal sulphate inputs, not in the precipitation step.<br><br>
+    India has localised the <b>least strategic part</b> of the midstream chain — the mechanical precipitation step — while importing dependency for everything that matters: NiSO₄ (Belgium/Japan/China), CoSO₄ (Chinese-processed DRC cobalt), MnSO₄ (Chinese-sulphated South African ore), LiOH·H₂O for calcination (74% Chinese refining). The solution is not to build more pCAM reactors. The solution is to build <b>metal sulphate production capacity</b> — specifically NiSO₄ and CoSO₄ sulphation plants requiring Class I nickel and refined cobalt inputs that India currently has no domestic pathway to produce.</div>
+  </div>
+  <div class="cg2">
+    <div class="ccd">
+      <div class="ctd">Where China Controls India's Battery Supply Chain — By Layer</div>
+      <div class="csd">Chinese processing/ownership share (%) at each midstream layer (Tier A/B)</div>
+      <div class="cwt"><canvas id="layerChart"></canvas></div>
+    </div>
+    <div class="ccd">
+      <div class="ctd">Value Addition Per Midstream Step — The Export-Reimport Trap</div>
+      <div class="csd">Approximate market value (USD/tonne LCE equivalent) — each step India exports vs reimports (Tier B)</div>
+      <div class="cwt"><canvas id="valueChart"></canvas></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- UBO RISK -->
+<section id="ubo">
+<div class="container fi">
+  <span class="stag">04 — Ultimate Beneficiary Ownership Risk (UBO Risk) — New Methodology</span>
+  <h2 class="sh2">Country-of-Origin Is a Customs Instrument. Not a Risk Instrument.</h2>
+  <p class="sbody">The single most important methodological contribution of this framework: geopolitical supply chain risk cannot be assessed by reading the flag on the shipping container. The operationally relevant question is who makes the production allocation decision — and that question requires auditing corporate ownership structures, not trade certificates.</p>
+  <div class="box box-crit">
+    <div class="box-tag">UBO Risk — Formal Definition</div>
+    <div class="box-text"><b>Ultimate Beneficiary Ownership Risk (UBO Risk):</b> The supply chain vulnerability created when the corporate entity that makes production, pricing, and allocation decisions for a critical industrial input is beneficially owned or operationally controlled by a foreign state-linked conglomerate — regardless of the geographic location of the physical asset or the national flag on the shipping certificate.<br><br>
+    A country-of-origin certificate is a customs instrument designed to assess tariff liability. It was not designed to assess strategic vulnerability. Corporate strategists deploying capital into India's battery supply chain who rely on country-of-origin certificates as their geopolitical risk tool are <b>measuring the wrong variable</b>. True supply chain resilience requires UBO analysis — auditing who makes the production decision, not where the physical asset sits.</div>
+  </div>
+
+  <div style="font-size:.76rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em;margin:1.5rem 0 .75rem;">
+    UBO Analysis — India's Critical Nickel Supply Chain
+  </div>
+
+  <div class="box box-navy" style="margin-bottom:1rem;">
+    <div class="box-tag">Nickel Variant A vs Variant B — Two Chemical Markets, Two Risk Structures</div>
+    <div class="box-text">India's nickel exposure operates across two chemically distinct market segments with entirely different geographic profiles and ownership risk structures. Conflating them produces the wrong policy prescription.<br><br>
+    <b>Variant A — Nickel Oxides and Hydroxides (NiO, Ni(OH)₂, MHP):</b> Upstream semi-processed feedstocks entering India's pCAM reactors. India sources 64.7% from Australia and the remainder predominantly from Indonesia. <span class="tier-tag tt-a">Tier A — IEEFA/ICRIER</span><br><br>
+    <b>Variant B — Nickel Sulphate (NiSO₄·6H₂O, battery-grade):</b> High-purity, cell-ready chemical. India sources 65%+ from Belgium (Umicore), with Japan and Finland as secondary suppliers. <span class="tier-tag tt-a">Tier A — IEEFA/ICRIER</span></div>
+  </div>
+
+  <div class="ubo-grid" id="uboGrid"></div>
+
+  <div class="box box-crit" style="margin-top:1rem;">
+    <div class="box-tag">The Diversification Mirage — Dissolved at the UBO Level</div>
+    <div class="box-text">
+    <b>The Indonesia mirage:</b> India sources Variant A nickel from Indonesia. The physical assets are Indonesian. The export certificate says Indonesia. The beneficial owners of the HPAL plants producing that MHP are Tsingshan Holding Group and Huayou Cobalt — Chinese state-influenced conglomerates headquartered in Wenzhou and Tongxiang. The production allocation decision — whether to sell MHP to Indian buyers or redirect to Chinese cathode precursor plants — is made in China. The country-of-origin certificate is Indonesian. The UBO Risk is Chinese.<br><br>
+    <b>The Belgium mirage:</b> India sources Variant B nickel sulphate from Belgium. Umicore is a genuine Belgian corporate entity — this is real first-order diversification. However Umicore's NiSO₄ feedstock includes Class I nickel from Norilsk-linked operations and African mines with Chinese concession ownership. The diversification holds at the refiner level and partially fails at the feedstock level. The country-of-origin certificate says Belgium. The UBO Risk on the feedstock has Russian and Chinese components.<br><br>
+    <b>The correct statement:</b> India's apparent nickel supply chain diversification — Indonesia for intermediates, Belgium for sulphates — survives a country-of-origin audit and <b>partially fails a UBO audit</b>. True diversification requires BHP Nickel West MHP off-take (genuinely Western ownership, Australian geopolitical alignment), domestic sulphation capacity (which India does not have), or both.</div>
+  </div>
+
+  <div class="cg2">
+    <div class="ccd">
+      <div class="ctd">Nickel Variant A — India Import Sources (Tier A · IEEFA/ICRIER)</div>
+      <div class="csd">Nickel Oxides and Hydroxides — country of origin vs effective UBO nationality</div>
+      <div class="cw"><canvas id="varAChart"></canvas></div>
+    </div>
+    <div class="ccd">
+      <div class="ctd">Nickel Variant B — India Import Sources (Tier A · IEEFA/ICRIER)</div>
+      <div class="csd">Nickel Sulphate — country of origin vs feedstock UBO risk</div>
+      <div class="cw"><canvas id="varBChart"></canvas></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- J&K REALITY -->
+<section id="jk" class="salt">
+<div class="container fi">
+  <span class="stag">05 — The J&K Lithium Reality Check</span>
+  <h2 class="sh2">Not a Paradox. Not an Irony. A Policy Delusion.</h2>
+  <p class="sbody">Previous versions of this framework cited India's 5.9 million tonne J&K lithium occurrence as an "astounding paradox" — reserves in the ground while India imports at a premium. That framing was analytically lazy. This version corrects it with precision.</p>
+  <div class="box box-crit">
+    <div class="box-tag">The UNFC Classification — What the Numbers Actually Mean</div>
+    <div class="box-text">The Geological Survey of India classified the J&K lithium occurrence under the <b>United Nations Framework Classification (UNFC) system as G3/G4</b> — reconnaissance-level geological evidence. G3 means the deposit has been identified through surface mapping, geochemical sampling, and limited drilling but has <b>not been systematically delineated through close-spaced infill drilling</b>. G4 is purely speculative occurrence.<br><br>
+    Neither classification constitutes a proven, measured, or indicated reserve under any internationally recognised mining finance standard — not JORC, not NI 43-101, not SAMREC. <b>No major mining finance institution would lend against a G3/G4 resource. No EPC contractor would commit to a project schedule based on it.</b> The 5.9 million tonne figure is a geological occurrence estimate. It is a notation on a government survey map. Treating it as a strategic offset to Chinese processing dominance within this decade is not optimism. It is a <b>classification error dressed as policy.</b></div>
+  </div>
+  <div class="box box-warn" style="margin-top:.75rem;">
+    <div class="box-tag">The Engineering Barrier — Why Claystone Lithium Is Uniquely Difficult</div>
+    <div class="box-text">The world's two proven lithium extraction pathways are designed for specific geological formations. <b>Brine processing</b> (Chile's Atacama, Argentina's Lithium Triangle): lithium-bearing brines at 1,000–3,000 ppm pumped from aquifers, concentrated by solar evaporation over 12–18 months, converted to Li₂CO₃ or LiOH·H₂O. CAPEX: $3,000–5,000/tonne LCE capacity. <b>Spodumene hard rock</b> (Australia's Pilbara): LiAlSi₂O₆ ore at 1.5–2.5% Li₂O, mined, flotation-concentrated, sulphuric acid roasted. CAPEX: $6,000–10,000/tonne LCE.<br><br>
+    India's J&K deposit is <b>neither</b>. It is a <b>sedimentary claystone deposit</b> — lithium adsorbed onto illite and smectite clay mineral lattices at approximately 1,500–5,900 ppm. Claystone lithium extraction at industrial scale has <b>not been commercially demonstrated anywhere in the world as of 2026</b>. The closest attempt — Lithium Americas' Thacker Pass in Nevada, a claystone deposit — began permitting in 2016, received its Record of Decision in 2023, and is only now entering first production after nearly a decade and over $1 billion in engineering investment.<br><br>
+    <b>Additional J&K complications:</b> Seismic Zone IV (Zone V boundary proximity). Altitude 2,500–3,500 metres. No heavy industrial infrastructure within hundreds of kilometres. Restricted access for Chinese hydrometallurgical technology partners — who are the most technically capable but geopolitically excluded. Seasonal water constraints from Himalayan hydrology. National Board for Wildlife clearance requirement for sensitive terrain.<br><br>
+    <b>Realistic timeline:</b> G3/G4 to bankable feasibility study: 3–5 years of systematic infill drilling. Feasibility to environmental and mining clearances in J&K: 4–6 years. Clearances to first commercial ore: 3–4 years. First ore to battery-grade LiOH·H₂O using unproven claystone extraction technology: add 3–5 years. <b>Minimum total: 13–20 years to first battery-grade output.</b></div>
+  </div>
+  <div class="box box-red-l" style="margin-top:.75rem;">
+    <div class="box-tag">The Export-Reimport Value Trap — If India Mines Without Refining</div>
+    <div class="box-text">Even if J&K ore becomes available within this decade — which the timeline above demonstrates it cannot — India faces the export-reimport value destruction trap without concurrent domestic refining infrastructure.<br><br>
+    <b>Battery-grade LiOH·H₂O specification:</b> Minimum 56.5% LiOH·H₂O purity. Metallic impurities (Na, K, Ca, Mg, Fe, SO₄²⁻) each below 20–100 ppm depending on cathode specification. Achieving this requires rotary kiln calcination, membrane electrolysis or causticisation, and multi-stage recrystallisation — a capital-intensive chemical plant taking 4–7 years to commission from greenfield, requiring continuous process engineering expertise and stable low-cost electricity.<br><br>
+    Without this infrastructure: spodumene concentrate exports at $800–1,200/tonne. Battery-grade LiOH·H₂O reimports at $14,000–22,000/tonne. <b>The value addition between raw ore and battery-grade chemical is 10–20×</b> — and every dollar of that value addition India exports to a foreign refiner is a dollar of strategic leverage India surrenders permanently. The J&K reserve does not escape this trap without a simultaneous and substantial greenfield refining investment. The two must be built together or neither is strategically meaningful.</div>
+  </div>
+</div>
+</section>
+
+<!-- LEONTIEF -->
+<section id="leontief">
+<div class="container fi">
+  <span class="stag">06 — Leontief Contagion Mechanics — Operationalised</span>
+  <h2 class="sh2">Industrial Dependency Propagation — Three Waves, One Chokepoint</h2>
+  <p class="sbody">Supply disruptions do not stay contained. They propagate through industrial linkages in three successive waves. The Leontief Input-Output framework makes visible exactly which sectors are hit, in what sequence, and at what magnitude — for each of the three critical chokepoints India faces.</p>
+  <div class="box box-navy">
+    <div class="box-tag">Three-Wave Propagation Model</div>
+    <div class="box-text"><b>Wave 1 — Direct effects (Days 0–30):</b> Sectors immediately deprived of the critical input. Cathode manufacturers cannot source NiSO₄. Solar module installers cannot source polysilicon. The physical supply stops.<br><br>
+    <b>Wave 2 — Indirect effects (Days 30–90):</b> Sectors that depend on Wave 1 sectors. EV manufacturers cannot source battery packs → assembly lines halt → steel demand for chassis drops → logistics sector loses freight volume. Each transmission is multiplied by the Leontief output multiplier for that sector linkage.<br><br>
+    <b>Wave 3 — Induced effects (Months 3–12):</b> Economy-wide income and CapEx effects. Gigafactory projects under construction are suspended. Green infrastructure financing dries up. India's energy transition timeline slips 3–7 years. The stranded CapEx triggers broader investment confidence erosion in India's manufacturing sector.</div>
+  </div>
+  <div class="io-wrap">
+    <table class="io-t" id="ioMatrix"></table>
+  </div>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:.55rem;font-size:.7rem;color:rgba(255,255,255,.42);">
+    <span>I-O Coefficient legend:</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:rgba(183,28,28,.3);border-radius:2px;vertical-align:middle;margin-right:.25rem;"></span>Critical (&gt;0.70)</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:rgba(230,81,0,.2);border-radius:2px;vertical-align:middle;margin-right:.25rem;"></span>High (0.40–0.70)</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:rgba(13,115,119,.15);border-radius:2px;vertical-align:middle;margin-right:.25rem;"></span>Moderate (0.20–0.40)</span>
+  </div>
+  <div class="cg2" style="margin-top:1.25rem;">
+    <div class="ccd">
+      <div class="ctd">Contagion Propagation — Three Disruption Scenarios by Wave</div>
+      <div class="csd">Estimated % production impact per sector (Tier B — I-O coefficient derived)</div>
+      <div class="cwt"><canvas id="contagionChart"></canvas></div>
+    </div>
+    <div class="ccd">
+      <div class="ctd">Leontief Output Multipliers — Battery Critical Materials</div>
+      <div class="csd">$1 of supply disruption → $X of downstream industrial output impact (Tier B)</div>
+      <div class="cwt"><canvas id="multiplierChart"></canvas></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CIIP SCORES -->
+<section id="scores" class="salt">
+<div class="container fi">
+  <span class="stag">07 — CIIP Battery Index v4.0</span>
+  <h2 class="sh2">Expert-Calibrated Scores. PCA-Informed Upgrade Pathway. No Overclaiming.</h2>
+  <p class="sbody">CIIP scores are expert-calibrated on a Leontief I-O theoretical basis. They are not regression-derived. The methodology section below specifies exactly what PCA validation would change — and why the current framework remains analytically defensible without it.</p>
+  <div class="box box-warn" style="margin-bottom:1.3rem;">
+    <div class="box-tag">Methodology Precision — PCA Has Not Been Executed on This Dataset</div>
+    <div class="box-text">v3.0 used the phrase "PCA-calibrated" imprecisely. The correct characterisation: <b>expert-calibrated with a PCA-informed weight rationale</b>. The weight structure (EV 0.35 / Cross-Industry 0.40 / Geopolitical 0.25) is designed for compatibility with eventual PCA validation. EV Demand weight (0.35) reflects the exponential EV adoption variance — the factor that PCA on supply disruption time-series data would likely identify as a primary loading. Cross-Industry Competition (0.40) retains the highest weight as the primary Leontief contagion mechanism — the dimension most correlated with downstream output multipliers. Geopolitical Risk (0.25) reflects HHI-calculable production concentration plus export control event frequency. The 90-day empirical upgrade pathway is specified in Section 11.</div>
+  </div>
+  <div class="sgrid" id="scoreGrid"></div>
+  <div class="ccd" style="margin-top:1.1rem;">
+    <div class="ctd">CIIP Score Matrix — All Six Materials with Chemistry-Conditional Ranges</div>
+    <div class="csd">Expert-calibrated scores (Tier B). Red threshold = CRITICAL (≥8.5). Orange = HIGH (≥7.0). Bars show base score; brackets show chemistry-conditional range.</div>
+    <div class="cwt"><canvas id="ciipChart"></canvas></div>
+  </div>
+</div>
+</section>
+
+<!-- CHEMISTRY LONGEVITY CLAUSE -->
+<section id="chemistry">
+<div class="container fi">
+  <span class="stag">08 — Chemistry Longevity Clause (New in v4.0)</span>
+  <h2 class="sh2">This Is Not a Lithium Calculator. It Is an Inflexible Infrastructure Dependency Matrix.</h2>
+  <p class="sbody">The most common future objection to this framework: "Your nickel and lithium thesis becomes irrelevant if sodium-ion scales by 2029." This section dissolves that objection permanently — not by dismissing sodium-ion, but by proving that chemistry transition does not exit the infrastructure dependency. It migrates it.</p>
+  <div class="box box-navy">
+    <div class="box-tag">The Chemistry Longevity Clause — Formal Statement</div>
+    <div class="box-text">The CIIP Battery framework is not a nickel or lithium calculator. It is an <b>Inflexible Infrastructure Dependency Matrix</b> that models the midstream chemical processing chokepoints required to manufacture any high-energy-density electrochemical cell — regardless of the specific anode-cathode chemistry.<br><br>
+    Whether the cathode is NMC, LFP, or a layered oxide sodium-ion formulation, the manufacturing pathway requires: <b>sulphated metal precursors → co-precipitation reactors with NaOH/NH₄OH chemistry → controlled atmosphere calcination → dry room cell assembly → formation cycling infrastructure</b>. China controls the majority of global capacity at every one of these process steps. A chemistry transition does not exit the infrastructure dependency. It <b>relocates the specific minerals at risk while preserving the structural chokepoint architecture</b>.</div>
+  </div>
+  <div class="cg2">
+    <div class="ccd">
+      <div class="ctd">Infrastructure Dependency by Chemistry — What Changes, What Does Not</div>
+      <div class="csd">Chinese processing share (%) per chemistry variant across key manufacturing steps (Tier B)</div>
+      <div class="cwt"><canvas id="chemDepChart"></canvas></div>
+    </div>
+    <div class="ccd">
+      <div class="ctd">Nickel CIIP Score — Chemistry Pathway Sensitivity</div>
+      <div class="csd">Score conditional on India EV fleet chemistry mix — NMC to Na-ion spectrum (Tier B/C)</div>
+      <div class="cw"><canvas id="chemSensChart"></canvas></div>
+    </div>
+  </div>
+  <div class="box box-gold-l" style="margin-top:.75rem;">
+    <div class="box-tag">The Sodium-Ion Qualification — Precisely Bounded</div>
+    <div class="box-text">Sodium-ion layered oxide cathodes (P2/O3-type — the energy-density-competitive commercial chemistry used in CATL Gen 2 and beyond) require pCAM synthesis using NaOH precipitation and NH₄OH morphology control — structurally identical to NMC. The same Chinese-dominated sulphation capacity, CSTR reactor networks, and calcination kiln infrastructure apply. <b>For all applications requiring meaningful energy density, the processing infrastructure dependency is preserved under sodium-ion chemistry transition.</b><br><br>
+    The bounded exception: Prussian Blue Analogue (PBA) sodium-ion cathodes use a simpler co-precipitation of iron sulphate and sodium ferricyanide without CSTR morphology control. PBA cathodes achieve approximately 160 Wh/kg at cell level — restricting application to low-speed vehicles and stationary storage. For PBA-based sodium-ion in these narrow applications, the nickel and cobalt dependency is genuinely eliminated. The cobalt and nickel CIIP scores are irrelevant for this chemistry segment. For everything above 160 Wh/kg, the clause holds completely.<br><br>
+    <b>LFP specifically:</b> LFP eliminates NiSO₄ and CoSO₄ dependency entirely. It retains lithium carbonate dependency (74% Chinese refining), iron (domestically available), phosphate (India has deposits — Rajasthan, Madhya Pradesh, though battery-grade purification is undeveloped), and Chinese-dominated cell assembly equipment. LFP <b>reduces but does not eliminate</b> the infrastructure dependency. Sodium-ion <b>migrates but does not escape</b> it. Only a complete rebuild of midstream chemical processing infrastructure outside China — regardless of chemistry adopted — resolves the structural chokepoint.</div>
+  </div>
+</div>
+</section>
+
+<!-- EXECUTION -->
+<section id="execution" class="salt">
+<div class="container fi">
+  <span class="stag">09 — India Industrial Execution Feasibility</span>
+  <h2 class="sh2">The Gap Between Policy Ambition and Operational Physics</h2>
+  <p class="sbody">The CIIP framework identifies what India needs to build. This section models the operational constraints that determine whether and when India can build it. These are not pessimistic projections. They are engineering and economic realities that any serious investment analysis must confront before committing capital.</p>
+  <div class="fgrid" id="feasGrid"></div>
+  <div style="font-size:.75rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.07em;margin:1.4rem 0 .75rem;">
+    India Execution Timeline — Best / Base / Delayed Case
+    <span class="tier-tag tt-b">Tier B — Based on comparable Indian greenfield project delivery data</span>
+  </div>
+  <div class="tgrid">
+    <div class="tg best">
+      <div class="tg-label">Best Case</div>
+      <div class="tgi"><span>J&K auction awarded (2nd attempt)</span><span class="tgy">2027</span></div>
+      <div class="tgi"><span>Adani Mundra polysilicon commissioning</span><span class="tgy">2027</span></div>
+      <div class="tgi"><span>First 5 GWh domestic cell output</span><span class="tgy">2028</span></div>
+      <div class="tgi"><span>25 GWh domestic cell capacity</span><span class="tgy">2030</span></div>
+      <div class="tgi"><span>Pilot Li refinery (hydromet, non-J&K feedstock)</span><span class="tgy">2030</span></div>
+      <div class="tgi"><span>60 GWh cell capacity</span><span class="tgy">2031</span></div>
+      <div class="tgi"><span>Battery-grade LiOH commercial output</span><span class="tgy">2032</span></div>
+      <div class="tgi"><span>J&K first commercial ore (if claystone tech proven)</span><span class="tgy">2038+</span></div>
+    </div>
+    <div class="tg base">
+      <div class="tg-label">Base Case</div>
+      <div class="tgi"><span>J&K auction awarded</span><span class="tgy">2028</span></div>
+      <div class="tgi"><span>Adani Mundra polysilicon commissioning</span><span class="tgy">2029</span></div>
+      <div class="tgi"><span>First 5 GWh domestic cell output</span><span class="tgy">2029</span></div>
+      <div class="tgi"><span>25 GWh domestic cell capacity</span><span class="tgy">2031</span></div>
+      <div class="tgi"><span>Pilot Li refinery</span><span class="tgy">2032</span></div>
+      <div class="tgi"><span>60 GWh cell capacity</span><span class="tgy">2033</span></div>
+      <div class="tgi"><span>Battery-grade LiOH commercial output</span><span class="tgy">2034</span></div>
+      <div class="tgi"><span>J&K first commercial ore</span><span class="tgy">2040+</span></div>
+    </div>
+    <div class="tg delay">
+      <div class="tg-label">Delayed India</div>
+      <div class="tgi"><span>J&K auction awarded</span><span class="tgy">2030+</span></div>
+      <div class="tgi"><span>Adani Mundra polysilicon commissioning</span><span class="tgy">2031</span></div>
+      <div class="tgi"><span>First 5 GWh domestic cell output</span><span class="tgy">2031</span></div>
+      <div class="tgi"><span>25 GWh domestic cell capacity</span><span class="tgy">2034</span></div>
+      <div class="tgi"><span>Pilot Li refinery</span><span class="tgy">2035</span></div>
+      <div class="tgi"><span>60 GWh cell capacity</span><span class="tgy">2036</span></div>
+      <div class="tgi"><span>Battery-grade LiOH commercial output</span><span class="tgy">2037</span></div>
+      <div class="tgi"><span>J&K first commercial ore</span><span class="tgy">2042+</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MITIGATION -->
+<section id="mitigation">
+<div class="container fi">
+  <span class="stag">10 — Strategic Mitigation Framework</span>
+  <h2 class="sh2">Authoritative Prescriptions for Businesses Operating in India's Battery Ecosystem</h2>
+  <p class="sbody">A world-class strategic paper does not only diagnose the sickness. It prescribes the cure with operational precision. The following four mitigation pathways each target a specific layer of the dependency architecture — not generic diversification advice, but actionable corporate strategy.</p>
+  <div class="mit-grid" id="mitGrid"></div>
+  <div class="box box-crit" style="margin-top:1rem;">
+    <div class="box-tag">What None of These Mitigations Fully Resolves</div>
+    <div class="box-text">Every mitigation above reduces exposure at one layer while other layers remain vulnerable. Australia off-take removes the Variant A nickel UBO Risk — it does not address CoSO₄ (Chinese-processed DRC cobalt), MnSO₄ (Chinese sulphation), or graphite anode (Chinese dominated). Belgium NiSO₄ off-take addresses Variant B nickel — it does not address the Belgian feedstock's Russian and African UBO exposure, which requires contractual provenance clauses not currently standard in Indian procurement. LFP chemistry switch eliminates nickel and cobalt exposure — it retains lithium carbonate (74% Chinese refining) and Chinese cell manufacturing equipment (80–90%). Recycling infrastructure creates a secondary supply loop — it cannot materialise at meaningful scale before 2032–2035 given India's nascent collection infrastructure.<br><br>
+    <b>The only complete solution is domestic midstream chemical processing infrastructure</b> — specifically metal sulphate production (NiSO₄ and CoSO₄ sulphation), lithium hydroxide refining, and cell manufacturing equipment localisation. Everything else is a mitigation. None of these mitigations should be mistaken for a solution.</div>
+  </div>
+</div>
+</section>
+
+<!-- SCENARIOS -->
+<section class="salt">
+<div class="container fi">
+  <span class="stag">11 — Scenario Architecture</span>
+  <h2 class="sh2">Four Scenarios · Named Assumptions · Explicit Uncertainty</h2>
+  <p class="sbody">All 2030 projections are Tier C — strategic scenario assumptions, not econometric forecasts. The $19B–$53B range bounds outcome space across four explicitly different assumption sets. No single projection should be cited without its scenario label and assumption set attached.</p>
+  <div class="cg2">
+    <div class="ccd">
+      <div class="ctd">2030 Clean Energy Import Bill — Four Scenarios (Tier C)</div>
+      <div class="csd">Battery + Solar combined USD Billion. S1=China dominance · S2=Moderate · S3=Aggressive refining · S4=Na-ion+Recycling</div>
+      <div class="cw"><canvas id="scenChart"></canvas></div>
+    </div>
+    <div class="ccd">
+      <div class="ctd">Import Recovery Timeline — Oil vs Critical Minerals (Tier B)</div>
+      <div class="csd">Weeks to restore 80% supply after disruption event — the asymmetry is the policy argument</div>
+      <div class="cw"><canvas id="recovChart"></canvas></div>
+    </div>
+  </div>
+  <div class="box box-navy">
+    <div class="box-tag">Why S1 ($53B) remains the trajectory India is currently on</div>
+    <div class="box-text">S4 (sodium-ion + aggressive recycling) requires simultaneous execution of CATL Na-ion commercialisation for high-energy applications, Indian battery collection infrastructure at scale, and domestic refining — none currently on-track for a pre-2032 impact. S2 (base case, $38B) assumes moderate PLI success and partial J&K activation — where J&K activation now means securing non-J&K feedstock for a pilot refinery since J&K ore itself remains 13–20 years from commercial output. S1 ($53B) is the trajectory India is on absent a deliberate, adequately funded policy pivot toward domestic metal sulphate production and lithium refining. <b>The framework does not predict which scenario materialises. It identifies which specific capital deployments are required to move from S1 toward S2 or S3, and exactly why those deployments are harder than the policy documents acknowledge.</b></div>
+  </div>
+</div>
+</section>
+
+<!-- EMPIRICAL ROADMAP -->
+<section id="empirical">
+<div class="container fi">
+  <span class="stag">12 — Empirical Validation Roadmap</span>
+  <h2 class="sh2">From Expert-Calibrated to Statistically Defensible — 30 / 90 / 365 Days</h2>
+  <p class="sbody">Six data tracks, seven quantitative models, three execution horizons. This section specifies exactly what data infrastructure is required, which models it enables, and what version of CIIP each unlocks.</p>
+  <div class="rcols">
+    <div class="rc rc30">
+      <div class="rc-label">30 Days — Data Foundation</div>
+      <div class="rci">USGS 2015–2025 production data by country for all 6 materials — calculate HHI annually</div>
+      <div class="rci">LME nickel and cobalt price series from Quandl/Yahoo Finance — 10-year monthly</div>
+      <div class="rci">UN Comtrade API — India import data by material, source country, value</div>
+      <div class="rci">IEEFA/ICRIER Variant A/B nickel split — validate against DGCI&S import records</div>
+      <div class="rci">Build clean pandas DataFrame: 10yr × 6 materials × 4 dimensions</div>
+      <div class="rci">Publish methodology note on GitHub — establishes analytical transparency</div>
+      <div class="rci">Calculate UBO-adjusted concentration index (separate origin vs beneficial owner country)</div>
+    </div>
+    <div class="rc rc90">
+      <div class="rc-label">90 Days — Statistical Models</div>
+      <div class="rci">Run PCA on assembled panel — derive empirical dimension weights replacing current 0.35/0.40/0.25</div>
+      <div class="rci">Build HHI-derived geopolitical score replacing qualitative assessment</div>
+      <div class="rci">CV-weighted price shock model for volatility dimension</div>
+      <div class="rci">Backtest revised CIIP scores against 15 documented supply disruption events (2015–2025)</div>
+      <div class="rci">Scenario stress test engine — four chemistry pathway assumptions with sensitivity ranges</div>
+      <div class="rci">Rebuild Streamlit dashboard with statistically calibrated scores — CIIP v4.1</div>
+      <div class="rci">Delphi survey: 5 senior practitioners validate scoring matrix (LinkedIn network outreach)</div>
+    </div>
+    <div class="rc rc365">
+      <div class="rc-label">365 Days — Network Model</div>
+      <div class="rci">Build Leontief I-O matrix from India trade data — 12 materials × 18 sectors</div>
+      <div class="rci">Construct directed graph using NetworkX — nodes: materials + sectors + countries + corporate entities</div>
+      <div class="rci">Add UBO layer to graph — edges weighted by beneficial ownership nationality not origin country</div>
+      <div class="rci">Calculate betweenness centrality — identify top-5 industrial chokepoint nodes</div>
+      <div class="rci">Monte Carlo simulation — confidence intervals for all CIIP scores</div>
+      <div class="rci">Dependency elasticity analysis — India industrial output sensitivity per $1B supply disruption</div>
+      <div class="rci">Extend to semiconductors, AI infrastructure, fertiliser minerals — India 2030 ORM — CIIP v5.0</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- COUNTRIES -->
+<section class="salt">
+<div class="container fi">
+  <span class="stag">13 — Country Dependency Map</span>
+  <h2 class="sh2">Origin Country vs UBO Country — Two Different Maps</h2>
+  <p class="sbody">The following dependency data uses origin country as per trade statistics. The UBO-adjusted map, where corporate ownership overrides geographic origin, shows materially higher Chinese structural exposure for India, Indonesia, Vietnam, and Europe than the origin-country data suggests.</p>
+  <div class="cgrid" id="countryGrid"></div>
+</div>
+</section>
+
+<!-- SIGNALS -->
+<section id="signals">
+<div class="container fi">
+  <span class="stag">14 — Contagion Watch Signals</span>
+  <h2 class="sh2">Five Signals That Move Before Prices Do</h2>
+  <p class="sbody">The CIIP framework is a live operational intelligence system. Weekly monitoring of these five signals provides structural early warning of supply chain stress based on the Leontief propagation mechanics in Section 06.</p>
+  <div class="sigs" id="signalsList"></div>
+</div>
+</section>
+
+<!-- REFERENCES -->
+<section id="references" class="slight">
+<div class="container fi">
+  <span class="stag">References & Data Confidence — All 22 Sources Classified</span>
+  <h2 class="sh2">Fairness Check · Every Claim Sourced · Every Claim Tiered</h2>
+  <p class="sbody" style="color:var(--slate);">All references carry a data confidence tier. Tier A = institutionally verified primary data suitable for direct citation. Tier B = derived analytical estimate with stated assumptions. Tier C = strategic scenario assumption — directional and bounded.</p>
+  <div class="refs" id="refsList"></div>
+  <div class="disclaimer">
+    <strong>Methodological Disclaimer:</strong> CIIP scores are expert-calibrated analytical judgements grounded in Leontief Input-Output economics. They are not regression-derived statistical outputs. "PCA-informed" in this document means the weight structure is designed for compatibility with future PCA validation — PCA has not been executed on this dataset as of v4.0. All 2030 projections are Tier C scenario assumptions — directional estimates bounded by named assumptions, not econometric forecasts. UBO risk assessments are based on publicly available corporate ownership information; they reflect analytical judgement and may not capture all ownership changes. J&K lithium occurrence is classified G3/G4 under UNFC — it is a geological notation, not a bankable reserve.
+    <br><br><strong>Developer:</strong> Aditya V Sivaram Poduri · India Supply Chain Signals · indiasupplychainsignals.substack.com · CIIP Battery Intelligence v4.0 · June 2026
+  </div>
+</div>
+</section>
+
+<div class="motif">
+  <div class="mq">"AI accelerates operational logic. It does not create it."</div>
+  <div class="ma">India Supply Chain Signals · Aditya V Sivaram Poduri · CIIP Battery Intelligence v4.0 · June 2026</div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const CHEM_CHAIN = [
+  {step:"Layer 2a",label:"Smelting & Refining",sublabel:"Ore → Class I Nickel / Li Carbonate / Cobalt Hydroxide",
+   body:"Converts raw ore into the primary metal intermediate. For nickel: RKEF smelting (Indonesia/Philippines ore) or HPAL processing to MHP. For lithium: spodumene conversion to Li₂CO₃ or LiOH·H₂O. For cobalt: DRC cobalt oxide refining. This is where the highest geological and chemical value is added.",
+   india:"ZERO",indiacls:"ind-zero"},
+  {step:"Layer 2b",label:"Sulphation / Chemical Conversion",sublabel:"Class I Metal → Battery-Grade Metal Sulphates (NiSO₄, CoSO₄, MnSO₄)",
+   body:"Converts Class I nickel, refined cobalt, and manganese ore into battery-grade sulphate solutions. Requires dissolution in sulphuric acid, multi-stage purification to remove metallic impurities below 20–100 ppm, and crystallisation to hexahydrate form. China controls ~80% of global NiSO₄ and CoSO₄ sulphation capacity. This is the most critical chokepoint India does not address.",
+   india:"ZERO",indiacls:"ind-zero"},
+  {step:"Layer 2c",label:"pCAM Synthesis",sublabel:"Metal Sulphates + NaOH + NH₄OH → Mixed Hydroxide Precursor",
+   body:"NiSO₄, CoSO₄, MnSO₄ dissolved in DI water fed into CSTR reactor. NaOH raises pH to 11–12, co-precipitating Ni(OH)₂, Co(OH)₂, Mn(OH)₂ as a mixed hydroxide precursor (MHP) particle. NH₄OH chelates metal ions, controlling nucleation kinetics to produce uniform spherical secondary particles of 10–15μm — the morphology that determines tap density and energy density. India has nascent capacity here but inputs are entirely imported.",
+   india:"NASCENT (inputs 100% imported)",indiacls:"ind-part"},
+  {step:"Layer 2d",label:"CAM Calcination",sublabel:"pCAM + LiOH·H₂O → NMC Cathode Oxide (700–900°C, O₂ atmosphere)",
+   body:"pCAM blended with lithium hydroxide monohydrate and fired in a rotary kiln at 700–900°C in controlled oxygen atmosphere. Produces NMC oxide (Li[NixMnyCoz]O₂). LiOH·H₂O input is 74% Chinese-refined. Tunnel kiln equipment is predominantly Chinese-manufactured. India has limited capacity; Chinese equipment dependency is near-total.",
+   india:"LIMITED (LiOH input 74% Chinese)",indiacls:"ind-part"},
+  {step:"Layer 3",label:"Cell Assembly",sublabel:"Electrodes + Electrolyte + Separator → Finished Cell (Dry Room Required)",
+   body:"Electrode coating (±2 micron precision), drying, calendering, slitting, winding/stacking, electrolyte filling, formation cycling, ageing. Requires dry room at <1% relative humidity dewpoint — high infrastructure burden in India's monsoon climate. 80–90% of cell assembly equipment is Chinese-manufactured. Amara Raja (Gotion LFP license), Exide (SVOLT license). India has gigafactory ambitions; operational scale is nascent.",
+   india:"NASCENT (equipment 80–90% Chinese)",indiacls:"ind-part"},
+];
+
+const UBO_CARDS = [
+  {name:"Indonesian HPAL Plants",origin:"Indonesia",uboCountry:"CHINA",uboClass:"cn",
+   rows:[
+     {k:"Origin country",v:"Indonesia",c:"lo"},
+     {k:"Export certificate",v:"Indonesia",c:"lo"},
+     {k:"Plant owners",v:"Tsingshan / Huayou Cobalt",c:"hi"},
+     {k:"Beneficial owner HQ",v:"Wenzhou / Tongxiang, China",c:"hi"},
+     {k:"Production allocation decision",v:"Made in China",c:"hi"},
+     {k:"UBO Risk nationality",v:"CHINESE",c:"hi"},
+   ],
+   verdict:"Country-of-origin: Indonesia. UBO Risk: China. The diversification is geographic. The control is Chinese."},
+  {name:"Belgian NiSO₄ (Umicore Olen)",origin:"Belgium",uboCountry:"MIXED",uboClass:"mx",
+   rows:[
+     {k:"Origin country",v:"Belgium",c:"lo"},
+     {k:"Refiner corporate HQ",v:"Brussels — genuine Belgian entity",c:"lo"},
+     {k:"UBO — refiner level",v:"Belgian (Umicore public company)",c:"lo"},
+     {k:"Feedstock source",v:"Russian Norilsk + African mines",c:"hi"},
+     {k:"African mine concessions",v:"Partial Chinese ownership (CMOC, Huayou)",c:"hi"},
+     {k:"UBO Risk — feedstock level",v:"RUSSIAN + CHINESE COMPONENT",c:"mx"},
+   ],
+   verdict:"First-order corporate diversification: real. Second-order feedstock UBO exposure: Russian and partially Chinese."},
+  {name:"DRC Cobalt Mines (Tenke / Kisanfu)",origin:"DRC",uboCountry:"CHINA",uboClass:"cn",
+   rows:[
+     {k:"Origin country",v:"Democratic Republic of Congo",c:"lo"},
+     {k:"Mine: Tenke Fungurume",v:"CMOC (Chinese state-influenced)",c:"hi"},
+     {k:"Mine: Kisanfu",v:"CMOC (acquired from Freeport)",c:"hi"},
+     {k:"Mine: Mutanda",v:"Glencore (Swiss — genuine diversification)",c:"lo"},
+     {k:"Cobalt sulphation (CoSO₄)",v:"~80% Chinese processing capacity",c:"hi"},
+     {k:"UBO Risk",v:"PREDOMINANTLY CHINESE",c:"hi"},
+   ],
+   verdict:"DRC is the geographic origin. China is the effective beneficial owner for majority of production and all sulphation."},
+  {name:"Australia Nickel West (BHP)",origin:"Australia",uboCountry:"WESTERN",uboClass:"ok",
+   rows:[
+     {k:"Origin country",v:"Australia",c:"lo"},
+     {k:"Primary producer",v:"BHP Nickel West (Western Australia)",c:"lo"},
+     {k:"Corporate HQ",v:"Melbourne — Anglo-Australian public company",c:"lo"},
+     {k:"Quad alignment",v:"Strong — Australia-India CMIN partnership",c:"lo"},
+     {k:"Production allocation",v:"Commercial — no state-directed redirection",c:"lo"},
+     {k:"UBO Risk",v:"WESTERN — GENUINE DIVERSIFICATION",c:"lo"},
+   ],
+   verdict:"Australia BHP Nickel West MHP is the only large-scale nickel intermediate with genuinely Western UBO. The benchmark for true supply chain independence."},
+];
+
+const MATERIALS = [
+  {name:"Nickel",score:10.0,tier:"CRITICAL",tc:"c",ev:3.0,cross:3.0,geo:3.0,
+   sectors:"EV batteries (NMC) + stainless steel + aerospace turbine blades (Inconel)",
+   chem:"Score conditional on NMC dominance in India. Falls to 6.8 under LFP dominance, 5.1 under Na-ion. Aerospace demand provides a structural floor (Inconel superalloys — no substitute above 1,000°C) independent of EV chemistry. UBO-adjusted exposure higher than origin-country data shows."},
+  {name:"Lithium",score:8.8,tier:"CRITICAL",tc:"c",ev:3.0,cross:2.5,geo:2.8,
+   sectors:"EV batteries + grid storage + consumer electronics",
+   chem:"J&K reserve is a G3/G4 geological notation — not a near-term strategic asset. Recycling offset reduces score ~0.4 by 2030. The only genuine de-risking event: Australia CMIN off-take for LiOH·H₂O from Kemerton/TLEA."},
+  {name:"Polysilicon",score:8.7,tier:"CRITICAL",tc:"c",ev:2.8,cross:2.8,geo:3.0,
+   sectors:"Solar PV + semiconductors + optoelectronics",
+   chem:"Vietnam/Malaysia re-labelling keeps effective score elevated — both source 85–95% polysilicon from China. Adani Mundra commissioning (if on Base Case schedule, 2029) reduces to ~7.5. Structural electricity cost disadvantage ($0.09–0.11/kWh India vs $0.03–0.05/kWh China) creates ongoing competitiveness challenge."},
+  {name:"Cobalt",score:7.8,tier:"HIGH",tc:"h",ev:2.5,cross:2.0,geo:3.0,
+   sectors:"EV batteries (NMC) + aerospace superalloys + defence electronics",
+   chem:"DRC concentration (70%+ mining) + Chinese processing (80%+ sulphation) = dual-layer chokepoint. Hydrometallurgical recycling most economically attractive here. UBO-adjusted exposure very high — CMOC (Chinese) controls Tenke Fungurume and Kisanfu."},
+  {name:"Graphite",score:7.4,tier:"HIGH",tc:"h",ev:2.5,cross:1.5,geo:3.0,
+   sectors:"Battery anode (natural + synthetic) + steelmaking + nuclear moderator",
+   chem:"China Oct 2024 export controls are a live escalation vector. Synthetic graphite from petroleum coke is a partial substitute but requires 3–5 year manufacturing build in India. No current anode-grade processing capacity anywhere in India."},
+  {name:"Manganese",score:6.1,tier:"MEDIUM",tc:"m",ev:2.0,cross:2.0,geo:2.0,
+   sectors:"NMC batteries + steel alloys + fertiliser production",
+   chem:"South Africa (36%) and Gabon (16%) provide geographic diversification — lower concentration risk. China processes ~50% globally (vs 80%+ for nickel/cobalt). MEDIUM score reflects structurally lower concentration. Rising under LMFP chemistry adoption."},
+];
+
+const COUNTRIES = [
+  {name:"India 🇮🇳",ev:"4% (2025)",gr:"+45% YoY",risk:"CRITICAL",rc:"#B71C1C",
+   deps:[{m:"Li compounds (origin)",v:"68% China",c:"hi"},{m:"Li-ion batteries",v:"85% China",c:"hi"},
+     {m:"NiSO₄ / Variant B",v:"65%+ Belgium (UBO: mixed)",c:"md"},
+     {m:"Ni hydroxide / Variant A",v:"64.7% Australia (UBO: Western)",c:"lo"},
+     {m:"CoSO₄",v:"~80% Chinese processed",c:"hi"},{m:"Li refining",v:"ZERO domestic",c:"hi"}]},
+  {name:"China 🇨🇳",ev:"52% (2025)",gr:"+18% YoY",risk:"MEDIUM",rc:"#0D7377",
+   deps:[{m:"Ni ore",v:"~60% Indonesia (UBO: Chinese)",c:"hi"},{m:"Li ore",v:"~55% Australia",c:"lo"},
+     {m:"Co ore",v:"70%+ DRC (UBO: Chinese)",c:"hi"},{m:"Graphite",v:"85% domestic",c:"lo"},
+     {m:"LFP cathode",v:"98% domestic",c:"lo"},{m:"Solar wafers",v:"97% domestic",c:"lo"}]},
+  {name:"USA 🇺🇸",ev:"10% (2025)",gr:"-4% YoY",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Cobalt",v:"75% DRC via China",c:"hi"},{m:"Graphite",v:"~70% China",c:"hi"},
+     {m:"Battery cells",v:"~65% Asia",c:"hi"},{m:"IRA re-shoring",v:"Early — 2027+ impact",c:"lo"},
+     {m:"Nickel",v:"~55% Canada/Indo",c:"md"},{m:"Lithium",v:"~60% Chile/Aus",c:"md"}]},
+  {name:"Europe 🇪🇺",ev:"27% (2025)",gr:"+33% YoY",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Graphite",v:"~80% China",c:"hi"},{m:"Cobalt",v:"~80% via China",c:"hi"},
+     {m:"Nickel",v:"~60% Indo/Russia",c:"hi"},{m:"NiSO₄ (Umicore)",v:"Belgian — feedstock Russian",c:"md"},
+     {m:"CRM Act",v:"Early implementation",c:"lo"},{m:"Lithium",v:"~55% Chile/Aus",c:"md"}]},
+  {name:"Indonesia 🇮🇩",ev:"14% (2025)",gr:"+100%+ YoY",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Ni ore (domestic)",v:"67%+ global output",c:"lo"},{m:"HPAL plants",v:"Tsingshan/Huayou — UBO: China",c:"hi"},
+     {m:"Battery cells",v:"~90% China JV",c:"hi"},{m:"Li imports",v:"~80% China",c:"hi"},
+     {m:"EV tech",v:"Chinese JV control",c:"hi"},{m:"MHP export",v:"Majority to China",c:"hi"}]},
+  {name:"Vietnam 🇻🇳",ev:"40% (2025)",gr:"from ~0% in 2020",risk:"HIGH",rc:"#E65100",
+   deps:[{m:"Battery cells",v:"~85% China",c:"hi"},{m:"Polysilicon",v:"~90% China origin",c:"hi"},
+     {m:"VinFast BOM",v:"~60% Chinese components",c:"hi"},{m:"Graphite",v:"~85% China",c:"hi"},
+     {m:"Note",v:"Re-labelling — not diversification",c:"hi"},{m:"Cobalt",v:"~80% via China",c:"hi"}]},
+];
+
+const SIGNALS = [
+  {tier:"CRITICAL",cls:"c",title:"Indonesia Nickel Quota Announcements — And Tsingshan/Huayou Allocation Decisions",
+   body:"67%+ of global mine output. But the operationally relevant signal is not Jakarta's government quota — it is Tsingshan and Huayou's monthly MHP allocation decisions between Chinese domestic cathode plants and Indian/other export buyers. These are corporate decisions made in Wenzhou, not government policies made in Jakarta. They do not appear in export control notifications. They appear in supply contract renegotiation notices.",
+   mon:"ESDM ministry quotas · ANTAM/Vale production · Tsingshan and Huayou quarterly output disclosures · LME Ni forward curve vs spot spread"},
+  {tier:"CRITICAL",cls:"c",title:"China MOFCOM/GACC Export Control Expansion — Next Frontier: Equipment",
+   body:"October 2024 controls covered graphite anode, cathode precursors, LFP technology. The next escalation frontier is battery formation and ageing equipment, electrode coating machinery, and dry room systems — Layer 3 controls that would terminate India's gigafactory programme from the equipment supply side rather than the materials side. A Layer 3 control is structurally more damaging than a materials export control because it cannot be mitigated by stockpiling.",
+   mon:"MOFCOM announcements weekly · GACC export licence approval rate · Chinese battery equipment industry association statements · MEI Industrial Policy gazette"},
+  {tier:"HIGH",cls:"h",title:"India J&K Lithium Programme — Resource Delineation Milestones",
+   body:"The signal to watch is NOT auction award dates. The signal is whether the GSI publishes systematic infill drilling results that upgrade the J&K occurrence from G3/G4 to a G1/G2 classified resource under UNFC — the minimum classification for a bankable feasibility study. Without this upgrade, no serious capital will commit. Track GSI annual field season reports for Reasi district drilling programme progress.",
+   mon:"GSI Annual General Report · MECL drilling programme updates · Ministry of Mines J&K resource delineation budget allocations"},
+  {tier:"HIGH",cls:"h",title:"NMC vs LFP Chemistry Split in Indian EV Registrations",
+   body:"India SUV/MPV segment (80% of EV sales 2025) is NMC-favourable — energy density matters. Two-wheeler segment adopting LFP for cost. This chemistry split is the single most important variable for nickel CIIP score trajectory. If India's SUV/MPV EV fleet maintains NMC dominance through 2030, nickel score stays at 10.0. If LFP penetrates SUV segment above 40%, nickel score falls below 8.0.",
+   mon:"SIAM monthly registrations by segment · FAME-III battery chemistry disclosures · OEM powertrain specification sheets · BIS battery standard notifications"},
+  {tier:"MEDIUM",cls:"m",title:"Adani Mundra Polysilicon — Electricity Cost and Commissioning Progress",
+   body:"The strategic variable is not whether Adani commissions the plant — it is whether the plant can operate competitively. Siemens process polysilicon requires 30–40 kWh per kg. India's industrial electricity at $0.09–0.11/kWh creates a structural $0.27–0.44/kg cost disadvantage vs Chinese production at $0.03–0.05/kWh. Monitor whether Gujarat industrial power tariff notifications create a dedicated tariff category for polysilicon manufacturing.",
+   mon:"Adani Green quarterly CAPEX disclosures · Gujarat Electricity Regulatory Commission tariff orders · MNRE polysilicon capacity addition data · Wacker/Hemlock benchmark polysilicon pricing"},
+];
+
+const MIT_CARDS = [
+  {cls:"mit-au",icon:"🇦🇺",title:"Australia CMIN Off-Take Framework",
+   body:"Target: BHP Nickel West MHP and hydroxide supply (Variant A) + IGO/Tianqi TLEA lithium hydroxide (LiOH·H₂O). This is the only large-scale Variant A nickel source with genuinely Western UBO — no Tsingshan, no Huayou, no state-directed reallocation risk. Formalise through India-Australia Critical Minerals Investment Partnership (CMIN) government-to-government framework backed by long-term corporate off-take agreements at the 5–10 year tenor that Indian gigafactory finance requires.",
+   action:"Action: Negotiate direct corporate off-take agreements with BHP Nickel West and TLEA. Push for LiOH·H₂O specification alignment with Indian battery manufacturers. Target 2026–2027 contract execution."},
+  {cls:"mit-be",icon:"🇧🇪",title:"Belgium/Umicore Second-Order Resilience Clauses",
+   body:"India already sources 65%+ of NiSO₄ from Belgium — this is existing practice, not a new recommendation. The upgrade required: contractual feedstock provenance disclosure and diversification clauses in all Belgian NiSO₄ supply contracts. Specifically require: minimum X% of NiSO₄ feedstock from non-Russian, non-Chinese-beneficially-owned sources. This converts Belgian sourcing from first-order diversification (which it currently is) into second-order resilience (which it currently is not).",
+   action:"Action: Insert UBO provenance clause into all NiSO₄ renewal negotiations. Engage Umicore directly on supply chain traceability programme (they already have one — leverage it contractually)."},
+  {cls:"mit-lfp",icon:"⚗",title:"LFP/Sodium-Ion Chemistry Fleet Adjustment",
+   body:"For commercial vehicle fleets, grid-scale energy storage, and two/three-wheeler applications: LFP eliminates NiSO₄ and CoSO₄ dependency entirely. Sodium-ion (layered oxide) migrates the dependency to manganese and iron-based precursors — structurally lower Chinese concentration risk. This is a Layer 2 bypass, not a Layer 2 fix. For applications where range and energy density are not the primary constraint, this is the most operationally immediate mitigation available — implementable on a 2–3 year product development cycle.",
+   action:"Action: EV fleet operators and energy storage developers — define threshold energy density requirements. For applications below 160 Wh/kg, mandate LFP or Na-ion in procurement specifications by 2027."},
+  {cls:"mit-rec",icon:"♻",title:"Domestic Battery Recycling Infrastructure — Hydromet Black Mass Processing",
+   body:"Invest in hydrometallurgical black mass processing co-located with gigafactory clusters (Gujarat, Pune industrial corridors). Commercial hydromet recycling recovers NiSO₄, CoSO₄, MnSO₄, and Li₂CO₃ in battery-grade purity from spent cells — creating a secondary, domestically controlled supply of the exact chemical precursors that Layer 2b currently imports from China. The technology exists (Li-Cycle, Umicore, Brunp). The Indian end-of-life battery wave is 2032–2035. Infrastructure must be built now to be ready for it.",
+   action:"Action: Corporate venture capital into black mass processing startups. Push MoEFCC for Battery Waste Management Rules 2022 enforcement with financial penalties creating market pull. Target 2 commercial-scale hydromet plants operational by 2030."},
+];
+
+const REFS = [
+  {code:"R01",t:"IEA Global EV Outlook 2025 — Electric Vehicle Batteries",u:"https://www.iea.org/reports/global-ev-outlook-2025/electric-vehicle-batteries",n:"China 80% battery cell production; lithium demand +30% 2024",tier:"A"},
+  {code:"R02",t:"IEA Global EV Outlook 2026 — Trends in Electric Cars",u:"https://www.iea.org/reports/global-ev-outlook-2026/trends-in-electric-cars",n:"China 13M EV sales 2025; 52% market share; India SUV/MPV 80% of EV sales",tier:"A"},
+  {code:"R03",t:"IEA Critical Minerals Outlook 2025",u:"https://www.iea.org/reports/global-critical-minerals-outlook-2025/executive-summary",n:"China refining dominance: Li 74%, Co 80%, graphite 85%; energy sector demand growth",tier:"A"},
+  {code:"R04",t:"USGS Mineral Commodity Summaries 2025 — Nickel",u:"https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-nickel.pdf",n:"Indonesia 67%+ global output; Australia –26%; global 3.7Mt 2024; HHI calculation basis",tier:"A"},
+  {code:"R05",t:"IndexBox — India Battery Manufacturing Import Dependency (2026)",u:"https://www.indexbox.io/blog/indias-battery-storage-push-import-dependency-persists",n:"India 18,200t lithium imports; 68% China; 2030 S1 projection $23B",tier:"A"},
+  {code:"R06",t:"IEEFA — Securing India's Battery Supply Chain (2026)",u:"https://ieefa.org/resources/securing-indias-battery-supply-chain-more-critical-ever",n:"India Li refining zero; cobalt 2,060t/yr; J&K G3/G4 classification confirmed",tier:"A"},
+  {code:"R07",t:"IEEFA/ICRIER — India Battery-Grade Nickel Trade Dynamics (2026)",u:"https://ieefa.org",n:"Variant A: Australia 64.7% of Ni oxide/hydroxide imports. Variant B: Belgium 65%+ of NiSO₄ imports. Core Tier A data for UBO analysis.",tier:"A"},
+  {code:"R08",t:"ORF — India's EV Sector and the China Challenge (2025)",u:"https://www.orfonline.org/expert-speak/india-s-ev-sector-and-the-china-challenge",n:"India imports 90%+ Li/Co/Ni requirements; China 85% battery import share",tier:"A"},
+  {code:"R09",t:"Down to Earth — India Solar Surge: China Polysilicon Dominance",u:"https://www.downtoearth.org.in/energy/indias-solar-success-is-riding-high-but-remains-wired-to-the-dragon",n:"China 91% polysilicon, 97% wafers; India $7B solar imports FY2024",tier:"A"},
+  {code:"R10",t:"China Briefing — Investor's Guide to Solar Manufacturing India",u:"https://www.china-briefing.com/china-outbound-news/an-investors-guide-to-solar-manufacturing-in-india",n:"China 75–95% solar PV supply chain; India module capacity 74GW March 2025",tier:"A"},
+  {code:"R11",t:"Deccan Herald — India Solar Imports $30B by 2030",u:"https://www.deccanherald.com/business/indias-solar-equipment-imports-may-surge-to-30-billion-by-2030-3240791",n:"$30B solar projection — S1 scenario assumption (Tier C context)",tier:"B"},
+  {code:"R12",t:"IEEFA — War Opens Renewable Energy Pathway (March 2026)",u:"https://ieefa.org/resources/war-opens-renewable-energy-pathway",n:"India oil import $116.4B FY2025; crude 229Mt; solar 143GW Feb 2026",tier:"A"},
+  {code:"R13",t:"ICCT — Global EV Market Monitor 2025",u:"https://theicct.org/publication/global-ev-market-monitor-for-ldvs-2025/",n:"Global 20M+ EVs 2025; Vietnam 40% share; India 4% share; SUV segment data",tier:"A"},
+  {code:"R14",t:"ING Think — Nickel Still Capped by Surplus (December 2025)",u:"https://think.ing.com/articles/nickel-still-capped-by-surplus/",n:"NMC China share 18% H1 2025; LFP dominance; nickel demand structural capping in China",tier:"A"},
+  {code:"R15",t:"USGS Mineral Commodity Summaries 2025 — Nickel Reserves",u:"https://investingnews.com/daily/resource-investing/base-metals-investing/nickel-investing/nickel-reserves-by-country/",n:"Indonesia, Australia, Brazil top reserves — reserve vs production distinction",tier:"A"},
+  {code:"R16",t:"ScienceDirect — Nickel-Based Superalloys for Gas Turbines (2023)",u:"https://www.sciencedirect.com/science/article/abs/pii/S0925838823024313",n:"Single-crystal Inconel exclusively for turbine blades; no substitute above 1,000°C",tier:"A"},
+  {code:"R17",t:"Academia.edu — Nickel Base Superalloys for Aero Engine Turbine Blades",u:"https://www.academia.edu/26183228/Nickel_Base_Superalloys_used_for_Aero_Engine_Turbine_Blades",n:"Turbine inlet temperature determined exclusively by Ni-base superalloy capability",tier:"A"},
+  {code:"R18",t:"Takshashila — India's Options Amid Chinese Export Curbs (2025)",u:"https://takshashila.org.in/content/blogs/20251014-indias-options-amid-chinese-export-curbs",n:"China Oct 2024 controls: graphite, LFP cathode, cell tech; India $2.2B cell imports FY2025",tier:"A"},
+  {code:"R19",t:"Stainless Steel World — World Nickel Market in 2025",u:"https://stainless-steel-world.net/the-world-nickel-market-in-2025",n:"70% nickel in stainless steel; NMC811 ~40% 2024; battery demand growing",tier:"A"},
+  {code:"R20",t:"LKY School — China Factor in India's Battery Ambitions (2025)",u:"https://lkyspp.nus.edu.sg/cag/publications/center-publications/publication-article/detail/the-china-factor",n:"Amara Raja–Gotion; Exide–SVOLT; India equipment imports $1.5B 2022; Layer 3 lock-in",tier:"A"},
+  {code:"R21",t:"UrjaDaily — India's Polysilicon Manufacturing Ecosystem (Dec 2025)",u:"https://urjadaily.com/indias-emerging-polysilicon-manufacturing-ecosystem-opportunities-and-challenges/",n:"Adani Mundra 30,000 MTPA; zero commercial Indian polysilicon; Siemens process electricity cost",tier:"B"},
+  {code:"R22",t:"Lithium Americas — Thacker Pass Project Technical Reports (2023–2025)",u:"https://www.lithiumamericas.com/thacker-pass/",n:"Comparable claystone Li deposit: 9+ years permitting to production; $1B+ engineering investment; benchmark for J&K timeline realism",tier:"A"},
+];
+
+const FEAS_DATA = [
+  {icon:"⚗",title:"Refining Feasibility",
+   body:"LiOH·H₂O refining (causticisation or membrane electrolysis): $2–3B capex per 20,000 MTPA plant · Energy 30–40 MWh/tonne (India: $0.09/kWh vs China: $0.03/kWh — 3× cost disadvantage) · Multi-stage recrystallisation for ≤20 ppm metallic impurity spec · Environmental clearance 18–24 months · No comparable greenfield reference in India.",
+   barriers:["Energy cost 3× gap","Purity engineering depth","Permitting 18–24 mo"]},
+  {icon:"🏭",title:"Manufacturing Feasibility",
+   body:"Gigafactory 10 GWh: $600–900M capex · Dry room <1% RH dewpoint — monsoon climate burden · Electrode coating ±2 micron precision requires Chinese/Japanese/German equipment · Electrolyte HF handling — chemical safety infrastructure absent at scale · Grid reliability <0.5% downtime tolerance vs India's 2–3% actual.",
+   barriers:["Dry room climate cost","Electrolyte HF infra","Grid reliability gap"]},
+  {icon:"🔗",title:"Precursor Supply Chain",
+   body:"NiSO₄, CoSO₄, MnSO₄ — zero domestic production, entirely imported. The pCAM reactor is domestically located. Its inputs are not. Separator membranes: 95%+ import dependent. Electrolyte solvents: significant Chinese dependency. This is the optical illusion: domestic reactor, foreign supply chain.",
+   barriers:["Metal sulphates zero domestic","Separator imports","Electrolyte dependency"]},
+  {icon:"👷",title:"Workforce Gap",
+   body:"Battery chemical engineers: India produces ~200/year, requires 2,000+ for 50 GWh scale · Electrochemistry PhDs: <50/year in relevant disciplines · Dry room and formation equipment maintenance: skills concentrated in China, Korea, Japan · Nearest transferable skill base: pharma API process engineering — requires systematic retooling programme.",
+   barriers:["Chemical engineers 10× gap","Electrochemistry PhD shortage","Maintenance skills absent"]},
+  {icon:"💰",title:"Financing Gap",
+   body:"Indian gigafactory IRR: 10–14% vs IRA-supported USA: 16–22% — capital flight risk · No India equivalent of IRA Production Tax Credit for battery-grade minerals · PLI battery delivery: 50 GWh target → 1.4 GWh actual FY2025 (97% underdelivery) · Chinese JV financing (Gotion, SVOLT) costs less but creates Layer 3 technology lock-in. DFI appetite for greenfield Li refining: near zero — no comparable project to benchmark.",
+   barriers:["IRR gap vs IRA","PLI 97% underdelivery","DFI risk appetite minimal"]},
+  {icon:"🌊",title:"J&K Specific Constraints",
+   body:"G3/G4 resource classification — no bankable reserve · Seismic Zone IV (Zone V boundary) · Altitude 2,500–3,500m — no industrial infrastructure within 200km · Claystone extraction technology unproven at industrial scale globally · Chinese hydromet technology partners geopolitically excluded · NBWL clearance for eco-sensitive terrain · Realistic first commercial ore: 13–20 years minimum.",
+   barriers:["G3/G4 — unbankable","Seismic + terrain","Claystone tech unproven"]},
+];
+
+// ─── RENDERS ─────────────────────────────────────────────────────────────────
+
+function renderChemChain() {
+  const el = document.getElementById('chemChain');
+  const colors = ['step-2a','step-2b','step-2c','step-2d','step-2e'];
+  CHEM_CHAIN.forEach((c,i) => {
+    el.innerHTML += `
+      <div class="chem-step">
+        <div class="cs-label ${colors[i]}">
+          <div>
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.15rem;opacity:.8;">${c.step}</div>
+            <div style="font-size:.82rem;font-weight:600;line-height:1.2;">${c.label}</div>
+            <div style="font-size:.68rem;opacity:.7;margin-top:.2rem;">${c.sublabel}</div>
+          </div>
+        </div>
+        <div class="cs-body">${c.body}</div>
+        <div class="cs-india ${c.indiacls}"><div style="font-size:.62rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.2rem;">India Capacity</div><div>${c.india}</div></div>
+      </div>`;
+  });
+}
+
+function renderUBO() {
+  const g = document.getElementById('uboGrid');
+  UBO_CARDS.forEach(c => {
+    const rowHtml = c.rows.map(r => `
+      <div class="ubo-row"><span class="ubo-key">${r.k}</span><span class="ubo-val ${r.c}">${r.v}</span></div>`).join('');
+    const headerBg = c.uboClass === 'cn' ? '#B71C1C' : c.uboClass === 'ok' ? '#2E7D32' : '#E65100';
+    g.innerHTML += `
+      <div class="ubo-card" style="border-color:${headerBg}33;">
+        <div class="ubo-head">
+          <div>
+            <div class="ubo-name">${c.name}</div>
+            <div class="ubo-origin">Geographic origin: ${c.origin}</div>
+          </div>
+          <div style="font-size:.68rem;font-weight:700;color:${headerBg};background:${headerBg}20;padding:.18rem .55rem;border-radius:3px;">UBO: ${c.uboCountry}</div>
+        </div>
+        ${rowHtml}
+        <div style="margin-top:.55rem;font-size:.72rem;color:rgba(255,255,255,.4);font-style:italic;border-top:1px solid rgba(255,255,255,.06);padding-top:.4rem;">${c.verdict}</div>
+      </div>`;
+  });
+}
+
+function renderIOMatrix() {
+  const headers = ["EV Batteries","Solar PV","Stainless Steel","Aerospace","Grid Storage","Electronics"];
+  const rows = [
+    {m:"Nickel (via Indonesia/HPAL)",vals:[0.85,0.05,0.72,0.68,0.45,0.12]},
+    {m:"Lithium (via China refining)",vals:[0.92,0.08,0.03,0.05,0.88,0.18]},
+    {m:"Polysilicon (China)",vals:[0.04,0.95,0.01,0.02,0.12,0.35]},
+    {m:"Cobalt (DRC/China)",vals:[0.78,0.02,0.08,0.52,0.65,0.22]},
+    {m:"Graphite (China)",vals:[0.88,0.03,0.02,0.04,0.82,0.15]},
+    {m:"Manganese (S.Africa/China)",vals:[0.42,0.02,0.38,0.15,0.35,0.06]},
+  ];
+  const t = document.getElementById('ioMatrix');
+  let h = `<thead><tr><th style="text-align:left;min-width:160px;">Material / Sector</th>`;
+  headers.forEach(hd => { h += `<th>${hd}</th>`; });
+  h += `</tr></thead><tbody>`;
+  rows.forEach(r => {
+    h += `<tr><td class="io-lbl">${r.m}</td>`;
+    r.vals.forEach(v => {
+      const cls = v>=0.7?'io-hi':v>=0.4?'io-med':v>=0.2?'io-lo':'io-zero';
+      h += `<td class="${cls}">${v.toFixed(2)}</td>`;
+    });
+    h += `</tr>`;
+  });
+  h += `</tbody>`;
+  t.innerHTML = h;
+}
+
+function renderScores() {
+  const g = document.getElementById('scoreGrid');
+  MATERIALS.forEach(m => {
+    const pct = (m.score/10*100).toFixed(0);
+    g.innerHTML += `
+      <div class="scard">
+        <div class="sch">
+          <div class="scn">${m.name} <span class="tier-tag tt-b">Tier B</span></div>
+          <div class="sbadge b${m.tc}">${m.tier}</div>
+        </div>
+        <div class="ssec">${m.sectors}</div>
+        <div class="sdims">
+          <span class="sdim">EV <b>${m.ev}</b></span>
+          <span class="sdim">Cross <b>${m.cross}</b></span>
+          <span class="sdim">Geo <b>${m.geo}</b></span>
+        </div>
+        <div class="strack"><div class="sfill ${m.tc}" style="width:0%" data-pct="${pct}%"></div></div>
+        <div class="snums"><span>0</span><span class="snv ${m.tc}">${m.score.toFixed(1)}</span><span>10</span></div>
+        <div class="cnote"><b>Conditionality:</b> ${m.chem}</div>
+      </div>`;
+  });
+}
+
+function renderFeas() {
+  const g = document.getElementById('feasGrid');
+  FEAS_DATA.forEach(c => {
+    const b = c.barriers.map(x => `<span class="barrier">${x}</span>`).join('');
+    g.innerHTML += `
+      <div class="fcard">
+        <div class="fcard-head"><span class="fcard-icon">${c.icon}</span><span class="fcard-title">${c.title}</span></div>
+        <div class="fcard-body">${c.body}</div>
+        <div style="margin-top:.6rem;">${b}</div>
+      </div>`;
+  });
+}
+
+function renderMit() {
+  const g = document.getElementById('mitGrid');
+  MIT_CARDS.forEach(c => {
+    g.innerHTML += `
+      <div class="mit-card ${c.cls}">
+        <div class="mit-head"><span class="mit-icon">${c.icon}</span><span class="mit-title">${c.title}</span></div>
+        <div class="mit-body">${c.body}</div>
+        <div class="mit-action">${c.action}</div>
+      </div>`;
+  });
+}
+
+function renderCountries() {
+  const g = document.getElementById('countryGrid');
+  COUNTRIES.forEach(c => {
+    const dh = c.deps.map(d =>
+      `<div class="dr"><span class="dn">${d.m}</span><span class="dv ${d.c}">${d.v}</span></div>`
+    ).join('');
+    g.innerHTML += `
+      <div class="ccard">
+        <div class="chead" style="background:${c.rc}18;border-bottom:2px solid ${c.rc};">
+          <div><div class="cname">${c.name}</div><div class="cev">EV: ${c.ev} · ${c.gr}</div></div>
+          <div style="font-size:.68rem;font-weight:700;color:${c.rc};background:${c.rc}20;padding:.16rem .52rem;border-radius:3px;">${c.risk}</div>
+        </div>
+        <div class="cdeps">${dh}</div>
+      </div>`;
+  });
+}
+
+function renderSignals() {
+  const l = document.getElementById('signalsList');
+  SIGNALS.forEach(s => {
+    l.innerHTML += `
+      <div class="sig">
+        <div class="sig-t ${s.cls}">${s.tier}</div>
+        <div class="sig-b">
+          <div class="sig-title">${s.title}</div>
+          <div class="sig-text">${s.body}</div>
+          <div class="sig-mon">Monitor: ${s.mon}</div>
+        </div>
+      </div>`;
+  });
+}
+
+function renderRefs() {
+  const l = document.getElementById('refsList');
+  REFS.forEach(r => {
+    const tc = r.tier==='A'?'ct-a':r.tier==='B'?'ct-b':'ct-c';
+    l.innerHTML += `
+      <div class="ri">
+        <div class="rc2">[${r.code}]</div>
+        <div class="rb">
+          <a href="${r.u}" target="_blank" rel="noopener">${r.t}</a>
+          <span class="${tc}">Tier ${r.tier}</span>
+          <div class="rn">${r.n}</div>
+        </div>
+      </div>`;
+  });
+}
+
+// ─── CHARTS ──────────────────────────────────────────────────────────────────
+const dg='rgba(255,255,255,0.07)',dl='rgba(255,255,255,0.44)';
+
+function buildCharts() {
+  // Recovery asymmetry
+  new Chart(document.getElementById('recoveryChart'),{type:'bar',
+    data:{labels:['Crude oil\nrerouting','Alt crude\nsupplier','Li refinery\n(greenfield)','NiSO₄\nalt source','Graphite\nanode alt'],
+      datasets:[{label:'Weeks to 80% supply restoration',
+        data:[3,6,260,52,78],
+        backgroundColor:['#2E7D32','#388E3C','#B71C1C','#E65100','#D32F2F'],borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:dl,font:{size:8.5}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v>52?Math.round(v/52)+'yr':v+'wk'},grid:{color:dg},
+          title:{display:true,text:'Recovery time',color:dl,font:{size:8}}}}}});
+
+  // Stranding risk
+  new Chart(document.getElementById('strandingChart'),{type:'bar',
+    data:{labels:['Gigafactory\n(10 GWh)','Solar\nInstallation','Grid\nStorage','EV Assembly\nLine','Polysilicon\nPlant'],
+      datasets:[{label:'Potential stranded CapEx (₹ Billion)',
+        data:[80,45,35,25,150],
+        backgroundColor:['#B71C1C','#D32F2F','#E53935','#E65100','#B71C1C'],borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:dl,font:{size:8.5}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>'₹'+v+'B'},grid:{color:dg}}}}});
+
+  // Layer control chart
+  new Chart(document.getElementById('layerChart'),{type:'bar',
+    data:{labels:['Layer 2a\nSmelting','Layer 2b\nSulphation','Layer 2c\npCAM Synth','Layer 2d\nCalcination','Layer 3\nCell Asm'],
+      datasets:[{label:'Chinese control/ownership (%)',
+        data:[75,82,78,74,85],
+        backgroundColor:['#B71C1C','#C62828','#B71C1C','#C62828','#B71C1C'],borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:dl,font:{size:8.5}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v+'%'},grid:{color:dg},max:100,
+          title:{display:true,text:'Chinese processing/ownership share',color:dl,font:{size:8}}}}}});
+
+  // Value addition chart
+  new Chart(document.getElementById('valueChart'),{type:'bar',
+    data:{labels:['Spodumene\nconcentrate','Li₂CO₃\n(tech grade)','LiOH·H₂O\n(battery grade)','pCAM','NMC CAM\noxide'],
+      datasets:[{label:'Approx. value (USD/tonne)',
+        data:[1000,8000,18000,25000,38000],
+        backgroundColor:['#2E7D32','#E65100','#B71C1C','#C62828','#B71C1C'],borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>`~$${c.raw.toLocaleString()}/tonne`}}},
+      scales:{x:{ticks:{color:dl,font:{size:8}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>'$'+(v/1000)+'k'},grid:{color:dg}}}}});
+
+  // Contagion
+  new Chart(document.getElementById('contagionChart'),{type:'bar',
+    data:{labels:['EV Battery\nCathode','Stainless\nSteel','Aerospace\nAlloys','Solar\nInstallation','EV Assembly','Grid\nStorage'],
+      datasets:[
+        {label:'Wave 1 (0–30d)',data:[22,12,8,0,0,0],backgroundColor:'rgba(183,28,28,.7)',borderRadius:2},
+        {label:'Wave 2 (30–90d)',data:[0,0,0,35,18,5],backgroundColor:'rgba(230,81,0,.6)',borderRadius:2},
+        {label:'Wave 3 (3–12mo)',data:[0,0,0,8,4,3],backgroundColor:'rgba(249,168,37,.5)',borderRadius:2},
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:8.5},boxWidth:10}}},
+      scales:{x:{stacked:true,ticks:{color:dl,font:{size:8}},grid:{display:false}},
+        y:{stacked:true,ticks:{color:dl,font:{size:8.5},callback:v=>`–${v}%`},grid:{color:dg}}}}});
+
+  // Multiplier
+  new Chart(document.getElementById('multiplierChart'),{type:'bar',
+    data:{labels:['Nickel','Polysilicon','Lithium','Cobalt','Graphite','Manganese'],
+      datasets:[{data:[2.8,2.6,2.4,1.9,1.7,1.4],
+        backgroundColor:['#B71C1C','#B71C1C','#C62828','#E65100','#E65100','#0D7377'],borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>`Multiplier: ${c.raw}×`}}},
+      scales:{x:{ticks:{color:dl,font:{size:9}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v+'×'},grid:{color:dg},min:0,max:3.5}}}});
+
+  // CIIP scores
+  new Chart(document.getElementById('ciipChart'),{type:'bar',
+    data:{labels:['Nickel','Lithium','Polysilicon','Cobalt','Graphite','Manganese'],
+      datasets:[{data:[10.0,8.8,8.7,7.8,7.4,6.1],
+        backgroundColor:['#B71C1C','#C62828','#D32F2F','#E65100','#EF6C00','#0D7377'],borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:dl,font:{size:10}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9}},grid:{color:dg},min:0,max:11}}}});
+
+  // Variant A
+  new Chart(document.getElementById('varAChart'),{type:'doughnut',
+    data:{labels:['Australia (BHP — Western UBO)','Indonesia (Tsingshan/Huayou — Chinese UBO)','Other'],
+      datasets:[{data:[64.7,28,7.3],
+        backgroundColor:['#2E7D32','#B71C1C','#546E7A'],
+        borderColor:['#06090f','#06090f','#06090f'],borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{color:dl,font:{size:8.5},boxWidth:10,padding:8}}}}});
+
+  // Variant B
+  new Chart(document.getElementById('varBChart'),{type:'doughnut',
+    data:{labels:['Belgium/Umicore (Western UBO, Russian feedstock)','Japan (partial Chinese upstream)','Finland (Norilsk-linked)','Other'],
+      datasets:[{data:[65,18,10,7],
+        backgroundColor:['#0D7377','#E65100','#FF8A65','#546E7A'],
+        borderColor:['#06090f','#06090f','#06090f','#06090f'],borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{color:dl,font:{size:8},boxWidth:10,padding:6}}}}});
+
+  // Chemistry dependency
+  new Chart(document.getElementById('chemDepChart'),{type:'bar',
+    data:{labels:['Sulphation\n(Layer 2b)','pCAM CSTR\n(Layer 2c)','Calcination\n(Layer 2d)','Cell Equip\n(Layer 3)','Separator\nmembranes'],
+      datasets:[
+        {label:'NMC',data:[82,78,74,87,92],backgroundColor:'rgba(183,28,28,.7)',borderRadius:2},
+        {label:'LFP',data:[0,55,70,85,90],backgroundColor:'rgba(230,81,0,.6)',borderRadius:2},
+        {label:'Na-ion (layered oxide)',data:[68,72,70,85,90],backgroundColor:'rgba(249,168,37,.5)',borderRadius:2},
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:8.5},boxWidth:10}}},
+      scales:{x:{ticks:{color:dl,font:{size:8}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v+'%'},grid:{color:dg},max:100,
+          title:{display:true,text:'Chinese processing share (%)',color:dl,font:{size:8}}}}}});
+
+  // Chemistry sensitivity
+  new Chart(document.getElementById('chemSensChart'),{type:'bar',
+    data:{labels:['NMC\nDominant','NMC/LFP\nMixed','LFP\nDominant','Na-ion\n(layered)','Na-ion\n(PBA only)'],
+      datasets:[{data:[10.0,8.2,6.8,7.1,4.2],
+        backgroundColor:['#B71C1C','#E65100','#F57C00','#FF8A65','#2E7D32'],borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:dl,font:{size:8.5}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9}},grid:{color:dg},min:0,max:11,
+          title:{display:true,text:'Nickel CIIP Score',color:dl,font:{size:8}}}}}});
+
+  // Scenario
+  new Chart(document.getElementById('scenChart'),{type:'bar',
+    data:{labels:['S1 China\nDominance','S2 Moderate\nLocalisation','S3 Aggressive\nRefining','S4 Na-ion\n+Recycling'],
+      datasets:[
+        {label:'Battery ($B)',data:[23,17,11,8],backgroundColor:['#B71C1C','#E65100','#0D7377','#2E7D32'],borderRadius:3},
+        {label:'Solar ($B)',data:[30,21,13,11],backgroundColor:['rgba(183,28,28,.45)','rgba(230,81,0,.45)','rgba(13,115,119,.45)','rgba(46,125,50,.45)'],borderRadius:3}
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:dl,font:{size:9},boxWidth:10}}},
+      scales:{x:{stacked:true,ticks:{color:dl,font:{size:8.5}},grid:{display:false}},
+        y:{stacked:true,ticks:{color:dl,font:{size:9},callback:v=>'$'+v+'B'},grid:{color:dg}}}}});
+
+  // Recovery timeline
+  new Chart(document.getElementById('recovChart'),{type:'bar',
+    data:{labels:['Crude oil\nalt route','NiSO₄\nalt supplier','Graphite\nanode alt','Li refinery\ngreenfield','Ni sulphation\ngreenfield'],
+      datasets:[{label:'Weeks to 80% supply restoration',
+        data:[4,52,78,260,364],
+        backgroundColor:['#2E7D32','#E65100','#D32F2F','#B71C1C','#880E0E'],borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:dl,font:{size:8.5}},grid:{display:false}},
+        y:{ticks:{color:dl,font:{size:9},callback:v=>v>=52?(v/52).toFixed(1)+'yr':v+'wk'},grid:{color:dg}}}}});
+}
+
+// ─── SCROLL ───────────────────────────────────────────────────────────────────
+function initScroll() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        e.target.classList.add('vis');
+        e.target.querySelectorAll('.sfill[data-pct]').forEach(b => {
+          setTimeout(() => { b.style.width = b.dataset.pct; }, 150);
+        });
+      }
+    });
+  }, { threshold:0.07 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderChemChain();
+renderUBO();
+renderIOMatrix();
+renderScores();
+renderFeas();
+renderMit();
+renderCountries();
+renderSignals();
+renderRefs();
+buildCharts();
+initScroll();
+</script>
+</body>
+</html>
